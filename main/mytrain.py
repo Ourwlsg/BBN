@@ -58,7 +58,9 @@ def parse_args():
 
 
 if __name__ == "__main__":
-    os.environ["CUDA_VISIBLE_DEVICES"] = cfg.GPU_ID
+    DIR_CV = '../cassava/data/cv1920/'
+    GPU_ID = '1'
+    os.environ["CUDA_VISIBLE_DEVICES"] = GPU_ID
     args = parse_args()
     update_config(cfg, args)
     logger, log_file = create_logger(cfg)
@@ -66,10 +68,10 @@ if __name__ == "__main__":
     cudnn.benchmark = True
     auto_resume = args.auto_resume
     K_FOLD = [0, 1, 2, 3, 4]
-    for k in eval(K_FOLD):
+    for k in K_FOLD:
         print('fold_' + str(k) + ' is running...')
-        train_label_dir = cfg.DIR_CV + 'fold_' + str(k) + '/train.txt'
-        val_label_dir = cfg.DIR_CV + 'fold_' + str(k) + '/val.txt'
+        train_label_dir = DIR_CV + 'fold_' + str(k) + '/train.txt'
+        val_label_dir = DIR_CV + 'fold_' + str(k) + '/val.txt'
         train_set = eval(cfg.DATASET.DATASET)(train_label_dir, "train", cfg)
         valid_set = eval(cfg.DATASET.DATASET)(val_label_dir, "valid", cfg)
 

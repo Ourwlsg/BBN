@@ -1,6 +1,4 @@
 NAME: 'BBN.cassava.cv1920.res50.100epoch'
-DIR_CV: '../cassava/data/cv1920/'
-GPU_ID: '1'
 OUTPUT_DIR: './output/cassava/cv1920'
 SHOW_STEP: 100
 SAVE_STEP: 5
