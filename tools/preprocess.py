@@ -27,12 +27,14 @@ def locationByLabel():
 
 if __name__ == '__main__':
 
-    locationByLabel()
+    # locationByLabel()
 
     K_FOLD = 5
     DIR_CV = '/workspace/BBN/cassava/data/cv1920/'
     traindata_path = '/workspace/BBN/cassava/data/train'
-    FILE_CSV = r'/workspace/data/cassava1920/train.csv'
+    # FILE_CSV = r'/workspace/data/cassava1920/train.csv'
+    FILE_CSV = r'/workspace/data/cassava1920/new_train.csv'
+
     dataframe = pd.read_csv(FILE_CSV)
     for index, label in enumerate(os.listdir(traindata_path)):
         random.seed(2020)
