@@ -12,7 +12,7 @@ import pandas as pd
 
 
 def locationByLabel():
-    DIR_IMAGES = r'/workspace/data/cassava1920/train_images'
+    DIR_IMAGES = r'/workspace/data/cassava1920/train_images/train_images/'
     FILE_CSV = r'/workspace/data/cassava1920/train.csv'
 
     DF = pd.read_csv(FILE_CSV)
