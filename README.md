@@ -1,3 +1,6 @@
+## This repository is using BBN in Cassava Leaf Disease Classification of Kaggle
+
+
 ## BBN: Bilateral-Branch Network with Cumulative Learning for Long-Tailed Visual Recognition
 Boyan Zhou, Quan Cui, Xiu-Shen Wei*, Zhao-Min Chen
 
