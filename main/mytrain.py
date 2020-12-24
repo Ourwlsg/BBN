@@ -1,5 +1,7 @@
-import main._init_paths
 import sys
+
+sys.path.insert(0, '/workspace/BBN/')
+import main._init_paths
 from lib.loss import *
 from lib.dataset.imbalance_cassava import IMBALANCECASSAVA
 from lib.config.mydefault import _C as cfg

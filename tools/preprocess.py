@@ -32,7 +32,7 @@ if __name__ == '__main__':
     DIR_CV = '/workspace/BBN/cassava/data/new_cv1920/'
     traindata_path = '/workspace/BBN/cassava/data/train'
     # FILE_CSV = r'/workspace/data/cassava1920/train.csv'
-    FILE_CSV = r'/workspace/data/cassava1920/new_train.csv'
+    FILE_CSV = r'/workspace/data/cassava1920/train.csv'
 
     dataframe = pd.read_csv(FILE_CSV)
     for index, label in enumerate(os.listdir(traindata_path)):
