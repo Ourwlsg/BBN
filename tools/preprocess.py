@@ -30,7 +30,7 @@ if __name__ == '__main__':
     # locationByLabel()
 
     K_FOLD = 5
-    DIR_CV = '/workspace/BBN/cassava/data/cv1920/'
+    DIR_CV = '/workspace/BBN/cassava/data/new_cv1920/'
     traindata_path = '/workspace/BBN/cassava/data/train'
     # FILE_CSV = r'/workspace/data/cassava1920/train.csv'
     FILE_CSV = r'/workspace/data/cassava1920/new_train.csv'
