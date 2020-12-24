@@ -28,7 +28,6 @@ def locationByLabel():
 if __name__ == '__main__':
 
     # locationByLabel()
-
     K_FOLD = 5
     DIR_CV = '/workspace/BBN/cassava/data/new_cv1920/'
     traindata_path = '/workspace/BBN/cassava/data/train'
