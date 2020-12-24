@@ -20,7 +20,6 @@ _C.RESUME_MODE = "all"
 _C.CPU_MODE = False
 _C.EVAL_MODE = False
 _C.DIR_CV = "../cassava/data/cv1920/"
-_C.K_FOLD = "[0,1,2,3,4]"
 _C.GPU_ID = "1"
 
 # ----- DATASET BUILDER -----

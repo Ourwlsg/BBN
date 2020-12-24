@@ -65,8 +65,8 @@ if __name__ == "__main__":
     warnings.filterwarnings("ignore")
     cudnn.benchmark = True
     auto_resume = args.auto_resume
-
-    for k in eval(cfg.K_FOLD):
+    K_FOLD = [0, 1, 2, 3, 4]
+    for k in eval(K_FOLD):
         print('fold_' + str(k) + ' is running...')
         train_label_dir = cfg.DIR_CV + 'fold_' + str(k) + '/train.txt'
         val_label_dir = cfg.DIR_CV + 'fold_' + str(k) + '/val.txt'
@@ -147,7 +147,7 @@ if __name__ == "__main__":
         shutil.copytree(os.path.join(this_dir, ".."), code_dir, ignore=ignore)
 
         if tensorboard_dir is not None:
-            dummy_input = torch.rand((1, 3) + (cfg.INPUT_SIZE,cfg.INPUT_SIZE)).to(device)
+            dummy_input = torch.rand((1, 3) + (cfg.INPUT_SIZE, cfg.INPUT_SIZE)).to(device)
             writer = SummaryWriter(log_dir=tensorboard_dir)
             writer.add_graph(model if cfg.CPU_MODE else model.module, (dummy_input,))
         else:
