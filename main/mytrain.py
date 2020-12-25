@@ -96,7 +96,7 @@ if __name__ == "__main__":
         # ----- BEGIN MODEL BUILDER -----
         model = get_model(cfg, num_classes, device, logger)
         # 是否是多卡训练的预模型
-        model = torch.nn.DataParallel(model)
+        # model = torch.nn.DataParallel(model)
         # cudnn.benchmark = True
 
         combiner = Combiner(cfg, device)
