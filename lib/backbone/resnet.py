@@ -290,6 +290,7 @@ def bbn_res50(
         last_layer_stride=last_layer_stride,
     )
     if pretrain and pretrained_model != "":
+        resnet = torch.nn.DataParallel(resnet)
         resnet.load_model(pretrain=pretrained_model)
     else:
         print("Choose to train from scratch")
