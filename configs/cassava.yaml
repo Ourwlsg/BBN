@@ -35,6 +35,7 @@ TRAIN:
     TYPE: 'bbn_mix'
 #    TYPE: 'default'
   OPTIMIZER:
+#    TYPE: 'SGD'
     TYPE: 'ADAM'
     BASE_LR: 0.001
     MOMENTUM: 0.9
@@ -47,10 +48,12 @@ TRAIN:
   TENSORBOARD:
     ENABLE: True
   SAMPLER:
-    TYPE: 'default'
+#    TYPE: 'default'
+    TYPE: 'weighted sampler'
     DUAL_SAMPLER:
       ENABLE: True
       TYPE: 'reverse'
+      #"balance"
 
 #TRANSFORMS:
 #  TRAIN_TRANSFORMS: ('random_crop', 'random_horizontal_flip')
