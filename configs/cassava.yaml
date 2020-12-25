@@ -15,6 +15,7 @@ DATASET:
 BACKBONE:
 #  TYPE: 'bbn_res32_cifar'
   TYPE: 'bbn_res50'
+  PRETRAINED_MODEL: "/workspace/BBN/cassava/pretrained_models/resnet50-19c8e357.pth"
 
 MODULE:
   TYPE: 'GAP'
@@ -35,7 +36,7 @@ TRAIN:
 #    TYPE: 'default'
   OPTIMIZER:
     TYPE: 'ADAM'
-    BASE_LR: 0.0005
+    BASE_LR: 0.001
     MOMENTUM: 0.9
     WEIGHT_DECAY: 2e-4
   LR_SCHEDULER:

@@ -8,7 +8,7 @@ _C = CN()
 
 # ----- BASIC SETTINGS -----
 _C.NAME = "cassava"
-_C.OUTPUT_DIR = "/home/zhucc/kaggle/BBN/cassava/output"
+_C.OUTPUT_DIR = "/workspace/BBN/cassava/output"
 _C.VALID_STEP = 1
 _C.SAVE_STEP = 1
 _C.SHOW_STEP = 10
@@ -35,7 +35,7 @@ _C.DATASET.IMBALANCECASSAVA.RANDOM_SEED = 2020
 _C.BACKBONE = CN()
 _C.BACKBONE.TYPE = "res50"
 _C.BACKBONE.FREEZE = False
-_C.BACKBONE.PRETRAINED_MODEL = ""
+_C.BACKBONE.PRETRAINED_MODEL = "/workspace/BBN/cassava/pretrained_models/resnet50-19c8e357.pth"
 
 # ----- MODULE BUILDER -----
 _C.MODULE = CN()
