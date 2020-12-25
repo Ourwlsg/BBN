@@ -60,8 +60,8 @@ def get_train_transform(mean=mean, std=std, size=0):
         A.VerticalFlip(p=0.5),
         A.HorizontalFlip(p=0.5),
         A.RandomRotate90(p=0.5),
-        A.GaussianBlur(p=0.5),
-        A.ShiftScaleRotate(p=0.5),
+        A.GaussianBlur(p=0.1),
+        A.ShiftScaleRotate(p=0.3),
         A.Normalize(mean=mean, std=std),
     ])
     return train_transform
