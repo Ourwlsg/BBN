@@ -60,6 +60,8 @@ def parse_args():
 if __name__ == "__main__":
     DIR_CV = '../cassava/data/cv1920/'
     GPU_ID = '1'
+    K_FOLD = [0, 1, 2, 3, 4]
+
     os.environ["CUDA_VISIBLE_DEVICES"] = GPU_ID
     args = parse_args()
     update_config(cfg, args)
@@ -67,7 +69,6 @@ if __name__ == "__main__":
     warnings.filterwarnings("ignore")
     cudnn.benchmark = True
     auto_resume = args.auto_resume
-    K_FOLD = [0, 1, 2, 3, 4]
     for k in K_FOLD:
         print('fold_' + str(k) + ' is running...')
         train_label_dir = DIR_CV + 'fold_' + str(k) + '/train.txt'
