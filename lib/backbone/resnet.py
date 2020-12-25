@@ -202,7 +202,8 @@ class BBN_ResNet(nn.Module):
         self.layer1 = self._make_layer(num_blocks[0], 64)
         self.layer2 = self._make_layer(num_blocks[1], 128, stride=2)
         self.layer3 = self._make_layer(num_blocks[2], 256, stride=2)
-        self.layer4 = self._make_layer(num_blocks[3] - 1, 512, stride=last_layer_stride)
+        # self.layer4 = self._make_layer(num_blocks[3] - 1, 512, stride=last_layer_stride)
+        self.layer4 = self._make_layer(num_blocks[3], 512, stride=last_layer_stride)
 
         self.cb_block = self.block(self.inplanes, self.inplanes // 4, stride=1)
         self.rb_block = self.block(self.inplanes, self.inplanes // 4, stride=1)
