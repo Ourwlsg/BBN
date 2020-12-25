@@ -48,8 +48,8 @@ TRAIN:
   TENSORBOARD:
     ENABLE: True
   SAMPLER:
-#    TYPE: 'default'
-    TYPE: 'weighted sampler'
+    TYPE: 'default'
+#    TYPE: 'weighted sampler'
     DUAL_SAMPLER:
       ENABLE: True
       TYPE: 'reverse'
