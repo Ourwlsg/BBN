@@ -35,8 +35,8 @@ if __name__ == '__main__':
 
     # FILE_CSV = r'/workspace/data/cassava1920/train.csv'
     # FILE_CSV = r'/workspace/data/cassava1920/train.csv'
-    FILE_CSV = r'/workspace/data/cassava20/new_train.csv'
-    # FILE_CSV = r'/workspace/data/cassava20/train.csv'
+    FILE_CSV = r'/workspace/data/cassava/new_train.csv'
+    # FILE_CSV = r'/workspace/data/cassava/train.csv'
 
     dataframe = pd.read_csv(FILE_CSV)
     for label in os.listdir(traindata_path):
