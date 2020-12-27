@@ -190,6 +190,9 @@ class BBN_ResNet(nn.Module):
             num_blocks,
             last_layer_stride=2,
     ):
+        # cfg,
+        # BottleNeck,
+        # [3, 4, 6, 3],
         super(BBN_ResNet, self).__init__()
         self.inplanes = 64
         self.block = block_type

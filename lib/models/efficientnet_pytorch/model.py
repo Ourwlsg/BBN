@@ -32,6 +32,54 @@ VALID_MODELS = (
 )
 
 
+class BottleNeck(nn.Module):
+    expansion = 4
+
+    def __init__(self, inplanes, planes, stride=1):
+        super(BottleNeck, self).__init__()
+        self.conv1 = nn.Conv2d(inplanes, planes, kernel_size=1, bias=False)
+        self.bn1 = nn.BatchNorm2d(planes)
+        self.relu1 = nn.ReLU(True)
+        self.conv2 = nn.Conv2d(
+            planes, planes, kernel_size=3, stride=stride, padding=1, bias=False
+        )
+        self.bn2 = nn.BatchNorm2d(planes)
+        self.relu2 = nn.ReLU(True)
+        self.conv3 = nn.Conv2d(
+            planes, planes * self.expansion, kernel_size=1, bias=False
+        )
+        self.bn3 = nn.BatchNorm2d(planes * self.expansion)
+        if stride != 1 or self.expansion * planes != inplanes:
+            self.downsample = nn.Sequential(
+                nn.Conv2d(
+                    inplanes,
+                    self.expansion * planes,
+                    kernel_size=1,
+                    stride=stride,
+                    bias=False,
+                ),
+                nn.BatchNorm2d(self.expansion * planes),
+            )
+        else:
+            self.downsample = None
+        self.relu = nn.ReLU(True)
+
+    def forward(self, x):
+        out = self.relu1(self.bn1(self.conv1(x)))
+
+        out = self.relu2(self.bn2(self.conv2(out)))
+
+        out = self.bn3(self.conv3(out))
+
+        if self.downsample != None:
+            residual = self.downsample(x)
+        else:
+            residual = x
+        out = out + residual
+        out = self.relu(out)
+        return out
+
+
 class MBConvBlock(nn.Module):
     """Mobile Inverted Residual Bottleneck Block.
     Args:
@@ -209,7 +257,8 @@ class EfficientNet(nn.Module):
         self._swish = MemoryEfficientSwish()
 
         # BBN
-        self.inplanes = 512
+        self.block = BottleNeck
+        self.inplanes = 256
         self.cb_block = self.block(self.inplanes, self.inplanes // 4, stride=1)
         self.rb_block = self.block(self.inplanes, self.inplanes // 4, stride=1)
 
