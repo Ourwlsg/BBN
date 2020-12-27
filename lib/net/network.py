@@ -2,7 +2,24 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from lib.backbone import res50, bbn_res50, res32_cifar, bbn_res32_cifar
+from lib.models import EfficientNet, load_state_dict_from_url, model_urls, LOCAL_PRETRAINED
 from lib.modules import GAP, Identity, FCNorm
+
+
+def Efficientnet(model_name, pretrained, test=False):
+    '''
+    model_name :'efficientnet-b0', 'efficientnet-b1-7'
+    '''
+    model = EfficientNet.from_name(model_name)
+    if not test:
+        if pretrained == False:
+            state_dict = load_state_dict_from_url(model_urls[model_name], progress=True)
+        else:
+            state_dict = torch.load(LOCAL_PRETRAINED[model_name])
+        model.load_state_dict(state_dict)
+    # fc_features = model._fc.in_features
+    # model._fc = nn.Linear(fc_features, num_classes)
+    return model
 
 
 class Network(nn.Module):
@@ -18,13 +35,15 @@ class Network(nn.Module):
 
         self.num_classes = num_classes
         self.cfg = cfg
-
-        self.backbone = eval(self.cfg.BACKBONE.TYPE)(
-            self.cfg,
-            pretrain=pretrain,
-            pretrained_model=cfg.BACKBONE.PRETRAINED_MODEL,
-            last_layer_stride=2,
-        )
+        if 'efficientnet' in self.cfg.BACKBONE.TYPE:
+            self.backbone = Efficientnet(self.cfg.BACKBONE.TYPE, pretrain, test=False)
+        else:
+            self.backbone = eval(self.cfg.BACKBONE.TYPE)(
+                self.cfg,
+                pretrain=pretrain,
+                pretrained_model=cfg.BACKBONE.PRETRAINED_MODEL,
+                last_layer_stride=2,
+            )
         self.module = self._get_module()
         self.classifier = self._get_classifer()
         self.feature_len = self.get_feature_length()

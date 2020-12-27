@@ -14,7 +14,7 @@ LOCAL_PRETRAINED = {
     'densenet169': home + '/weights/densenet169.pth',
     'moblienetv2': home + '/weights/mobilenetv2.pth',
     'efficientnet-b3': home + '/weights/efficientnet-b3.pth',
-    'efficientnet-b4': home + '/weights/efficientnet-b4.pth',
+    'efficientnet-b4': '/worksapce/BBN/cassava/pretrained_models/efficientnet-b4.pth',
     'efficientnet-b7': home + '/weights/efficientnet-b7.pth',
     'efficientnet-b8': home + '/weights/efficientnet-b8.pth'
 }

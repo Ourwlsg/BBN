@@ -89,7 +89,7 @@ if __name__ == "__main__":
             "cfg": cfg,
             "device": device,
         }
-
+        # CrossEntropy
         criterion = eval(cfg.LOSS.LOSS_TYPE)(para_dict=para_dict)
         epoch_number = cfg.TRAIN.MAX_EPOCH
 
@@ -236,6 +236,7 @@ if __name__ == "__main__":
                     best_result, best_epoch = valid_acc, epoch
                     torch.save({
                         'state_dict': model.state_dict(),
+                        # 'state_dict': model.module.state_dict(),
                         'epoch': epoch,
                         'best_result': best_result,
                         'best_epoch': best_epoch,

@@ -1,6 +1,6 @@
 NAME: 'BBN.cassava.cv1920.res50.100epoch'
 OUTPUT_DIR: './output/cassava/cv1920'
-SHOW_STEP: 100
+SHOW_STEP: 50
 SAVE_STEP: 5
 VALID_STEP: 1
 INPUT_SIZE: 512
@@ -14,7 +14,8 @@ DATASET:
 
 BACKBONE:
 #  TYPE: 'bbn_res32_cifar'
-  TYPE: 'bbn_res50'
+#  TYPE: 'bbn_res50'
+  TYPE: 'efficientnet-b4'
   PRETRAINED_MODEL: "/workspace/BBN/cassava/pretrained_models/resnet50-19c8e357.pth"
 
 MODULE:
@@ -60,7 +61,7 @@ TRAIN:
 #  TEST_TRANSFORMS: ()
 
 TEST:
-  BATCH_SIZE: 32
-  NUM_WORKERS: 16
+  BATCH_SIZE: 4
+  NUM_WORKERS: 2
   MODEL_FILE: 'best_model.pth'
 

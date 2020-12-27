@@ -18,7 +18,7 @@ def parse_args():
         "--cfg",
         help="decide which cfg to use",
         required=True,
-        default="configs/cifar10.yaml",
+        default="configs/cassava.yaml",
         type=str,
     )
     parser.add_argument(
@@ -30,6 +30,7 @@ def parse_args():
 
     args = parser.parse_args()
     return args
+
 
 def valid_model(dataLoader, model, cfg, device, num_classes):
     result_list = []
