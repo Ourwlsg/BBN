@@ -208,6 +208,11 @@ class EfficientNet(nn.Module):
         self._fc = nn.Linear(out_channels, self._global_params.num_classes)
         self._swish = MemoryEfficientSwish()
 
+        # BBN
+        self.inplanes = 512
+        self.cb_block = self.block(self.inplanes, self.inplanes // 4, stride=1)
+        self.rb_block = self.block(self.inplanes, self.inplanes // 4, stride=1)
+
     def set_swish(self, memory_efficient=True):
         """Sets swish function as memory efficient (for training) or standard (for export).
         Args:
@@ -282,7 +287,7 @@ class EfficientNet(nn.Module):
 
         return x
 
-    def forward(self, inputs):
+    def forward(self, inputs, **kwargs):
         """EfficientNet's forward function.
            Calls extract_features to extract features, applies final linear layer, and returns logits.
         Args:
@@ -299,7 +304,17 @@ class EfficientNet(nn.Module):
         #     x = x.flatten(start_dim=1)
         #     x = self._dropout(x)
         #     x = self._fc(x)
-        return x
+
+        if "feature_cb" in kwargs:
+            x1 = self.cb_block(x)
+            return x1
+        elif "feature_rb" in kwargs:
+            x2 = self.rb_block(x)
+            return x2
+        out1 = self.cb_block(x)
+        out2 = self.rb_block(x)
+        out = torch.cat((out1, out2), dim=1)
+        return out
 
     @classmethod
     def from_name(cls, model_name, in_channels=3, **override_params):
@@ -389,3 +404,22 @@ class EfficientNet(nn.Module):
             Conv2d = get_same_padding_conv2d(image_size=self._global_params.image_size)
             out_channels = round_filters(32, self._global_params)
             self._conv_stem = Conv2d(in_channels, out_channels, kernel_size=3, stride=2, bias=False)
+
+    def load_model(self, pretrain):
+        print("Loading Backbone pretrain model from {}......".format(pretrain))
+        model_dict = self.state_dict()
+        pretrain_dict = torch.load(pretrain)
+        pretrain_dict = pretrain_dict["state_dict"] if "state_dict" in pretrain_dict else pretrain_dict
+        from collections import OrderedDict
+
+        new_dict = OrderedDict()
+        for k, v in pretrain_dict.items():
+            if k.startswith("module"):
+                k = k[7:]
+            if "fc" not in k and "classifier" not in k:
+                k = k.replace("backbone.", "")
+                new_dict[k] = v
+
+        model_dict.update(new_dict)
+        self.load_state_dict(model_dict)
+        print("Backbone model has been loaded......")
