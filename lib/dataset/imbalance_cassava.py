@@ -55,7 +55,7 @@ def get_train_transform_strong(mean=mean, std=std, size=0):
 def get_train_transform(mean=mean, std=std, size=0):
     train_transform = A.Compose([
         A.Resize(width=int(size * (256 / 224)), height=int(size * (256 / 224)), interpolation=cv2.INTER_LINEAR),
-        A.RandomCrop(width=size, height=size),
+        A.CenterCrop(width=size, height=size),
         # A.CoarseDropout(p=0.5),
         A.VerticalFlip(p=0.5),
         A.HorizontalFlip(p=0.5),

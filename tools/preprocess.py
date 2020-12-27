@@ -29,13 +29,18 @@ if __name__ == '__main__':
 
     # locationByLabel()
     K_FOLD = 5
-    DIR_CV = '/workspace/BBN/cassava/data/new_cv1920/'
+    DIR_CV = '/workspace/BBN/cassava/data/new_cv20/'
     traindata_path = '/workspace/BBN/cassava/data/train'
+    # traindata_path = '/home/zhucc/kaggle/pytorch_classification/data/train'
+
     # FILE_CSV = r'/workspace/data/cassava1920/train.csv'
-    FILE_CSV = r'/workspace/data/cassava1920/train.csv'
+    # FILE_CSV = r'/workspace/data/cassava1920/train.csv'
+    FILE_CSV = r'/workspace/data/cassava20/new_train.csv'
+    # FILE_CSV = r'/workspace/data/cassava20/train.csv'
 
     dataframe = pd.read_csv(FILE_CSV)
-    for index, label in enumerate(os.listdir(traindata_path)):
+    for label in os.listdir(traindata_path):
+        print(label)
         random.seed(2020)
         # img_list = glob.glob(os.path.join(traindata_path, label, '*.jpg'))
         img_list = [os.path.join(traindata_path, label, img_id) for img_id in
@@ -50,12 +55,12 @@ if __name__ == '__main__':
             train_list = [image for image in img_list if image not in val_list]
             with open(txtpath + '/train.txt', 'a')as fr:
                 for img in train_list:
-                    # print(img + ' ' + str(index))
-                    fr.write(img + ' ' + str(index))
+                    # print(img + ' ' + str(label))
+                    fr.write(img + ' ' + str(label))
                     fr.write('\n')
 
             with open(txtpath + '/val.txt', 'a')as fv:
                 for img in val_list:
-                    # print(img + ' ' + str(index))
-                    fv.write(img + ' ' + str(index))
+                    # print(img + ' ' + str(label))
+                    fv.write(img + ' ' + str(label))
                     fv.write('\n')

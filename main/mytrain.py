@@ -59,6 +59,7 @@ def parse_args():
 
 if __name__ == "__main__":
     DIR_CV = '../cassava/data/cv1920/'
+    target_names = ['class 0', 'class 1', 'class 2', 'class 3', 'class 4']
     GPU_ID = '1'
     K_FOLD = [0, 1, 2, 3, 4]
 
@@ -230,8 +231,8 @@ if __name__ == "__main__":
 
             loss_dict, acc_dict = {"train_loss": train_loss}, {"train_acc": train_acc}
             if cfg.VALID_STEP != -1 and epoch % cfg.VALID_STEP == 0:
-                valid_acc, valid_loss = valid_model(
-                    validLoader, epoch, model, cfg, criterion, logger, device, writer=writer
+                valid_acc, valid_loss, result_epoch = valid_model(
+                    validLoader, epoch, model, cfg, criterion, logger, device, target_names, writer=writer
                 )
                 loss_dict["valid_loss"], acc_dict["valid_acc"] = valid_loss, valid_acc
                 if valid_acc > best_result:
@@ -254,6 +255,11 @@ if __name__ == "__main__":
             if cfg.TRAIN.TENSORBOARD.ENABLE:
                 writer.add_scalars("scalar/acc", acc_dict, epoch)
                 writer.add_scalars("scalar/loss", loss_dict, epoch)
+                writer.add_scalar('ACC/val', result_epoch['accuracy'], epoch)
+                for metric in ['precision', 'recall', 'f1-score']:
+                    writer.add_scalars(f'Metrics/{metric}',
+                                       {target_name: result_epoch[target_name][metric] for target_name in target_names},
+                                       epoch)
         if cfg.TRAIN.TENSORBOARD.ENABLE:
             writer.close()
         logger.info(

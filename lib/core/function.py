@@ -1,3 +1,5 @@
+from sklearn.metrics import classification_report
+
 import main._init_paths
 from lib.core.evaluate import accuracy, AverageMeter, FusionMatrix
 
@@ -57,16 +59,18 @@ def train_model(
     return acc.avg, all_loss.avg
 
 
-def valid_model(dataLoader, epoch_number, model, cfg, criterion, logger, device, **kwargs):
+def valid_model(dataLoader, epoch_number, model, cfg, criterion, logger, device, target_names, **kwargs):
     model.eval()
     num_classes = dataLoader.dataset.get_num_classes()
     fusion_matrix = FusionMatrix(num_classes)
-
+    labels_epoch = []
+    prediction_epoch = []
     with torch.no_grad():
         all_loss = AverageMeter()
         acc = AverageMeter()
         func = torch.nn.Softmax(dim=1)
         for i, (image, label, meta) in enumerate(dataLoader):
+            labels_epoch.extend(label)
             image, label = image.to(device), label.to(device)
 
             feature = model(image, feature_flag=True)
@@ -76,6 +80,7 @@ def valid_model(dataLoader, epoch_number, model, cfg, criterion, logger, device,
             score_result = func(output)
 
             now_result = torch.argmax(score_result, 1)
+            prediction_epoch.extend(now_result)
             all_loss.update(loss.data.item(), label.shape[0])
             fusion_matrix.update(now_result.cpu().numpy(), label.cpu().numpy())
             now_acc, cnt = accuracy(now_result.cpu().numpy(), label.cpu().numpy())
@@ -85,4 +90,8 @@ def valid_model(dataLoader, epoch_number, model, cfg, criterion, logger, device,
             epoch_number, all_loss.avg, acc.avg * 100
         )
         logger.info(pbar_str)
-    return acc.avg, all_loss.avg
+    result_epoch = classification_report(labels_epoch, prediction_epoch, labels=[0, 1, 2, 3, 4], target_names=target_names,
+                                   output_dict=True, digits=3)
+    print(classification_report(labels_epoch, prediction_epoch, labels=[0, 1, 2, 3, 4], target_names=target_names,
+                                digits=3))
+    return acc.avg, all_loss.avg, result_epoch
