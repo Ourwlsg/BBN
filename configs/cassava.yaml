@@ -1,4 +1,4 @@
-NAME: 'BBN.cassava.cv1920.res50.100epoch'
+NAME: 'BBN.cassava.cv1920.efficient-b4.100epoch'
 OUTPUT_DIR: './output/cassava/cv1920'
 SHOW_STEP: 50
 SAVE_STEP: 5
@@ -38,7 +38,7 @@ TRAIN:
   OPTIMIZER:
 #    TYPE: 'SGD'
     TYPE: 'ADAM'
-    BASE_LR: 0.001
+    BASE_LR: 0.0003
     MOMENTUM: 0.9
     WEIGHT_DECAY: 2e-4
   LR_SCHEDULER:

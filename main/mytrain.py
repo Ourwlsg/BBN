@@ -212,6 +212,8 @@ if __name__ == "__main__":
                 logger,
                 writer=writer,
             )
+            lr = optimizer.param_groups[0]['lr']
+            writer.add_scalar('learning_rate', lr, epoch)
             model_save_path = os.path.join(
                 model_dir,
                 "epoch_{}.pth".format(epoch),
