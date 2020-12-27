@@ -40,6 +40,6 @@ model_urls = {
 }
 from .vision import *
 from .resnext_wsl import *
-from .efficientnet_pytorch_old import *
+from .efficientnet_pytorch import *
 from .build_model import *
 
