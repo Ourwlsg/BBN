@@ -258,7 +258,7 @@ class EfficientNet(nn.Module):
 
         # BBN
         self.block = BottleNeck
-        self.inplanes = 64
+        self.inplanes = 256
         self.cb_block = self.block(self.inplanes, self.inplanes // 4, stride=1)
         self.rb_block = self.block(self.inplanes, self.inplanes // 4, stride=1)
 
@@ -355,13 +355,13 @@ class EfficientNet(nn.Module):
         #     x = self._fc(x)
 
         if "feature_cb" in kwargs:
-            x1 = self.MBConvBlock(x)
+            x1 = self.cb_block(x)
             return x1
         elif "feature_rb" in kwargs:
-            x2 = self.MBConvBlock(x)
+            x2 = self.rb_block(x)
             return x2
-        out1 = self.MBConvBlock(x)
-        out2 = self.MBConvBlock(x)
+        out1 = self.cb_block(x)
+        out2 = self.rb_block(x)
         out = torch.cat((out1, out2), dim=1)
         return out
 
