@@ -174,6 +174,8 @@ class IMBALANCECASSAVA(Dataset):
 
         img_path, target = self.data[index], self.targets[index]
         img = cv2.imread(img_path, cv2.IMREAD_COLOR)
+        if img is None:
+            print(img_path)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         meta = dict()
 
