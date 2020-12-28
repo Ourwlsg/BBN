@@ -355,13 +355,13 @@ class EfficientNet(nn.Module):
         #     x = self._fc(x)
 
         if "feature_cb" in kwargs:
-            x1 = self.cb_block(x)
+            x1 = self.MBConvBlock(x)
             return x1
         elif "feature_rb" in kwargs:
-            x2 = self.rb_block(x)
+            x2 = self.MBConvBlock(x)
             return x2
-        out1 = self.cb_block(x)
-        out2 = self.rb_block(x)
+        out1 = self.MBConvBlock(x)
+        out2 = self.MBConvBlock(x)
         out = torch.cat((out1, out2), dim=1)
         return out
 
