@@ -21,6 +21,8 @@ def Efficientnet(model_name, pretrained, test=False):
             pretrained_dict = torch.load(LOCAL_PRETRAINED[model_name])
             state_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict}
         model.load_state_dict(state_dict)
+
+
     # fc_features = model._fc.in_features
     # model._fc = nn.Linear(fc_features, num_classes)
     return model

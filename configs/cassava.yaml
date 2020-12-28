@@ -16,7 +16,9 @@ BACKBONE:
 #  TYPE: 'bbn_res32_cifar'
 #  TYPE: 'bbn_res50'
   TYPE: 'efficientnet-b4'
-  PRETRAINED_MODEL: "/workspace/BBN/cassava/pretrained_models/resnet50-19c8e357.pth"
+#  PRETRAINED_MODEL: "/workspace/BBN/cassava/pretrained_models/resnet50-19c8e357.pth"
+  PRETRAINED_MODEL: "/workspace/BBN/cassava/pretrained_models/efficientnet-b4.pth"
+
 
 MODULE:
   TYPE: 'GAP'
