@@ -1,8 +1,8 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from lib.backbone import res50, bbn_res50, res32_cifar, bbn_res32_cifar
-from lib.models import EfficientNet, load_state_dict_from_url, model_urls, LOCAL_PRETRAINED
+from lib.backbone import res50, bbn_res50, res32_cifar, bbn_res32_cifar, _resnext
+from lib.models import EfficientNet, load_state_dict_from_url, model_urls, LOCAL_PRETRAINED, Bottleneck
 from lib.modules import GAP, Identity, FCNorm
 
 
@@ -22,11 +22,13 @@ def Efficientnet(model_name, pretrained, cfg, test=False):
         pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict}
         model_dict.update(pretrained_dict)
         model.load_state_dict(model_dict)
-
-
-    # fc_features = model._fc.in_features
-    # model._fc = nn.Linear(fc_features, num_classes)
     return model
+
+
+def bbn_resnext50(cfg, test, progress=True, **kwargs):
+    kwargs['groups'] = 32
+    kwargs['width_per_group'] = 4
+    return _resnext('resnext50_32x4d', cfg, test, Bottleneck, [3, 4, 6, 3], True, progress, **kwargs)
 
 
 class Network(nn.Module):
@@ -44,6 +46,8 @@ class Network(nn.Module):
         self.cfg = cfg
         if 'efficientnet' in self.cfg.BACKBONE.TYPE:
             self.backbone = Efficientnet(self.cfg.BACKBONE.TYPE, pretrain, self.cfg, test=False)
+        elif 'resnext' in self.cfg.BACKBONE.TYPE:
+            self.backbone = bbn_resnext50(self.cfg, test=False)
         else:
             self.backbone = eval(self.cfg.BACKBONE.TYPE)(
                 self.cfg,

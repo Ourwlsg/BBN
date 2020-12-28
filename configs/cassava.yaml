@@ -16,8 +16,11 @@ BACKBONE:
 #  TYPE: 'bbn_res32_cifar'
   TYPE: 'bbn_res50'
 #  TYPE: 'efficientnet-b4'
+#  TYPE: 'resnext50'
+
   PRETRAINED_MODEL: "../cassava/pretrained_models/resnet50-19c8e357.pth"
 #  PRETRAINED_MODEL: "../cassava/pretrained_models/efficientnet-b4.pth"
+#  PRETRAINED_MODEL: "../cassava/pretrained_models/resnext50_32x4d.pth"
 
 
 MODULE:

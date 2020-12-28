@@ -1,4 +1,5 @@
 from sklearn.metrics import classification_report
+from tqdm import tqdm
 
 import main._init_paths
 from lib.core.evaluate import accuracy, AverageMeter, FusionMatrix
@@ -60,6 +61,7 @@ def train_model(
 
 
 def valid_model(dataLoader, epoch_number, model, cfg, criterion, logger, device, target_names, **kwargs):
+    pbar = tqdm(total=len(dataLoader))
     model.eval()
     num_classes = dataLoader.dataset.get_num_classes()
     fusion_matrix = FusionMatrix(num_classes)
@@ -85,7 +87,8 @@ def valid_model(dataLoader, epoch_number, model, cfg, criterion, logger, device,
             fusion_matrix.update(now_result.cpu().numpy(), label.cpu().numpy())
             now_acc, cnt = accuracy(now_result.cpu().numpy(), label.cpu().numpy())
             acc.update(now_acc, cnt)
-
+            pbar.set_description("Now Top1:{:>5.2f}%".format(now_acc * 100))
+            pbar.update(1)
         pbar_str = "------- Valid: Epoch:{:>3d}  Valid_Loss:{:>5.3f}   Valid_Acc:{:>5.2f}%-------".format(
             epoch_number, all_loss.avg, acc.avg * 100
         )
@@ -94,4 +97,5 @@ def valid_model(dataLoader, epoch_number, model, cfg, criterion, logger, device,
                                    output_dict=True, digits=3)
     print(classification_report(labels_epoch, prediction_epoch, labels=[0, 1, 2, 3, 4], target_names=target_names,
                                 digits=3))
+    pbar.close()
     return acc.avg, all_loss.avg, result_epoch
