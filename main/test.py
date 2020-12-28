@@ -158,12 +158,13 @@ if __name__ == "__main__":
 
     # for k, v in model.named_parameters():
     #     print(k)
+    # print("==============================================")
     # for k, v in torch.load(model_path)['state_dict'].items():
     #     print(k)
 
-    # for k, v in model.named_parameters():
-    #     if 0 in v:
-    #         print(k)
+    for k, v in model.named_parameters():
+        if 0 in v:
+            print(k)
 
     if cfg.CPU_MODE:
         model = model.to(device)

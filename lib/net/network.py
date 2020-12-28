@@ -6,21 +6,22 @@ from lib.models import EfficientNet, load_state_dict_from_url, model_urls, LOCAL
 from lib.modules import GAP, Identity, FCNorm
 
 
-def Efficientnet(model_name, pretrained, test=False):
+def Efficientnet(model_name, pretrained, cfg, test=False):
     '''
     model_name :'efficientnet-b0', 'efficientnet-b1-7'
     '''
     model = EfficientNet.from_name(model_name)
     if not test:
-        if pretrained == False:
-            state_dict = load_state_dict_from_url(model_urls[model_name], progress=True)
-        else:
+        # if pretrained == False:
+        #     state_dict = load_state_dict_from_url(model_urls[model_name], progress=True)
+        # else:
 
-            # state_dict = torch.load(LOCAL_PRETRAINED[model_name])
-            model_dict = model.state_dict()
-            pretrained_dict = torch.load(LOCAL_PRETRAINED[model_name])
-            state_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict}
-        model.load_state_dict(state_dict)
+        # state_dict = torch.load(LOCAL_PRETRAINED[model_name])
+        model_dict = model.state_dict()
+        pretrained_dict = torch.load(cfg.BACKBONE.PRETRAINED_MODEL)
+        pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in model_dict}
+        model_dict.update(pretrained_dict)
+        model.load_state_dict(model_dict)
 
 
     # fc_features = model._fc.in_features
@@ -42,7 +43,7 @@ class Network(nn.Module):
         self.num_classes = num_classes
         self.cfg = cfg
         if 'efficientnet' in self.cfg.BACKBONE.TYPE:
-            self.backbone = Efficientnet(self.cfg.BACKBONE.TYPE, pretrain, test=False)
+            self.backbone = Efficientnet(self.cfg.BACKBONE.TYPE, pretrain, self.cfg, test=False)
         else:
             self.backbone = eval(self.cfg.BACKBONE.TYPE)(
                 self.cfg,
