@@ -195,6 +195,8 @@ class IMBALANCECASSAVA(Dataset):
 
             sample_img_path, sample_label = self.data[sample_index], self.targets[sample_index]
             sample_img_row = cv2.imread(sample_img_path, cv2.IMREAD_COLOR)
+            if sample_img_row is None:
+                print(sample_img_path)
             sample_img_row = cv2.cvtColor(sample_img_row, cv2.COLOR_BGR2RGB)
             sample_img = self.transform(image=sample_img_row)['image']
             meta['sample_image'] = torch.from_numpy(sample_img).permute(2, 0, 1)
