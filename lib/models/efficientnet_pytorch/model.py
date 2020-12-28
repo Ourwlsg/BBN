@@ -258,7 +258,7 @@ class EfficientNet(nn.Module):
 
         # BBN
         self.block = BottleNeck
-        self.inplanes = 256
+        self.inplanes = 64
         self.cb_block = self.block(self.inplanes, self.inplanes // 4, stride=1)
         self.rb_block = self.block(self.inplanes, self.inplanes // 4, stride=1)
 
