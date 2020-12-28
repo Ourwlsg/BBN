@@ -70,7 +70,7 @@ def valid_model(dataLoader, epoch_number, model, cfg, criterion, logger, device,
         acc = AverageMeter()
         func = torch.nn.Softmax(dim=1)
         for i, (image, label, meta) in enumerate(dataLoader):
-            labels_epoch.extend(label)
+            labels_epoch.extend(label.numpy())
             image, label = image.to(device), label.to(device)
 
             feature = model(image, feature_flag=True)
@@ -80,7 +80,7 @@ def valid_model(dataLoader, epoch_number, model, cfg, criterion, logger, device,
             score_result = func(output)
 
             now_result = torch.argmax(score_result, 1)
-            prediction_epoch.extend(now_result)
+            prediction_epoch.extend(score_result.cpu().numpy())
             all_loss.update(loss.data.item(), label.shape[0])
             fusion_matrix.update(now_result.cpu().numpy(), label.cpu().numpy())
             now_acc, cnt = accuracy(now_result.cpu().numpy(), label.cpu().numpy())
