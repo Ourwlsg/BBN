@@ -113,6 +113,8 @@ class Network(nn.Module):
     def get_feature_length(self):
         if "cifar" in self.cfg.BACKBONE.TYPE:
             num_features = 64
+        elif "resnext" in self.cfg.BACKBONE.TYPE:
+            num_features = 4096
         else:
             num_features = 2048
 
