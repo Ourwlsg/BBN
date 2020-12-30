@@ -245,7 +245,7 @@ if __name__ == "__main__":
                         'best_epoch': best_epoch,
                         'scheduler': scheduler.state_dict(),
                         'optimizer': optimizer.state_dict(),
-                    }, os.path.join(model_dir, "best_model.pth")
+                    }, os.path.join(model_dir, f"best_model_{best_epoch}_{valid_acc}.pth")
                     )
                 logger.info(
                     "--------------Best_Epoch:{:>3d}    Best_Acc:{:>5.2f}%--------------".format(

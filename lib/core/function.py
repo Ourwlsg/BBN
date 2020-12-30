@@ -93,8 +93,9 @@ def valid_model(dataLoader, epoch_number, model, cfg, criterion, logger, device,
             epoch_number, all_loss.avg, acc.avg * 100
         )
         logger.info(pbar_str)
-    result_epoch = classification_report(labels_epoch, prediction_epoch, labels=[0, 1, 2, 3, 4], target_names=target_names,
-                                   output_dict=True, digits=3)
+    result_epoch = classification_report(labels_epoch, prediction_epoch, labels=[0, 1, 2, 3, 4],
+                                         target_names=target_names,
+                                         output_dict=True, digits=3)
     print(classification_report(labels_epoch, prediction_epoch, labels=[0, 1, 2, 3, 4], target_names=target_names,
                                 digits=3))
     pbar.close()
