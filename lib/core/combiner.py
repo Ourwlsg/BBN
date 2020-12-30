@@ -46,7 +46,7 @@ class Combiner:
             model(image_a, feature_cb=True),
             model(image_b, feature_rb=True),
         )
-
+        l = eval(l)
         # l = 1 - ((self.epoch - 1) / self.div_epoch) ** 2  # parabolic decay
         # # l = 0.5  # fix
         # # l = math.cos((self.epoch-1) / self.div_epoch * math.pi /2)   # cosine decay
@@ -54,8 +54,8 @@ class Combiner:
         # # l = 1 - (self.epoch-1) / self.div_epoch  # linear decay
         # # l = np.random.beta(self.alpha, self.alpha) # beta distribution
         # # l = 1 if self.epoch <= 120 else 0  # seperated stage
-        print(feature_a.shape)
-        print(feature_b.shape)
+        # print(feature_a.shape)
+        # print(feature_b.shape)
         mixed_feature = 2 * torch.cat((l * feature_a, (1 - l) * feature_b), dim=1)
         output = model(mixed_feature, classifier_flag=True)
         loss = l * criterion(output, label_a) + (1 - l) * criterion(output, label_b)
