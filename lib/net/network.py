@@ -116,7 +116,7 @@ class Network(nn.Module):
         if "cifar" in self.cfg.BACKBONE.TYPE:
             num_features = 64
         elif "resnext" in self.cfg.BACKBONE.TYPE:
-            num_features = 4096
+            num_features = 2048
         else:
             num_features = 2048
 
