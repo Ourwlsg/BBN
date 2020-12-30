@@ -1,4 +1,4 @@
-NAME: 'BBN.cassava.new_cv20.res50.100epoch'
+NAME: 'BBN.cassava.new_cv20.resnext50.100epoch'
 OUTPUT_DIR: './output/cassava/new_cv20'
 SHOW_STEP: 50
 SAVE_STEP: 5
