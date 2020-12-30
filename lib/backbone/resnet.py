@@ -387,6 +387,7 @@ class BBN_ResNextNet(nn.Module):
         out1 = self.cb_block(x)
         out2 = self.rb_block(x)
         out = torch.cat((out1, out2), dim=1)
+        print('feature_rb', out.shape)
         return out
     # def __init__(
     #         self,
