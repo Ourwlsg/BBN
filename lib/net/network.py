@@ -78,6 +78,7 @@ class Network(nn.Module):
     def extract_feature(self, x, **kwargs):
         if "bbn" in self.cfg.BACKBONE.TYPE:
             x = self.backbone(x, **kwargs)
+            print("extract_feature: ", x.shape)
         else:
             x = self.backbone(x)
         x = self.module(x)
