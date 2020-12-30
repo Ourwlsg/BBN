@@ -14,13 +14,13 @@ DATASET:
 
 BACKBONE:
 #  TYPE: 'bbn_res32_cifar'
-  TYPE: 'bbn_res50'
+#  TYPE: 'bbn_res50'
 #  TYPE: 'efficientnet-b4'
-#  TYPE: 'resnext50'
+  TYPE: 'resnext50'
 
-  PRETRAINED_MODEL: "../cassava/pretrained_models/resnet50-19c8e357.pth"
+#  PRETRAINED_MODEL: "../cassava/pretrained_models/resnet50-19c8e357.pth"
 #  PRETRAINED_MODEL: "../cassava/pretrained_models/efficientnet-b4.pth"
-#  PRETRAINED_MODEL: "../cassava/pretrained_models/resnext50_32x4d.pth"
+  PRETRAINED_MODEL: "../cassava/pretrained_models/resnext50_32x4d.pth"
 
 
 MODULE:
@@ -34,16 +34,16 @@ LOSS:
   LOSS_TYPE: 'CrossEntropy'
 
 TRAIN:
-  BATCH_SIZE: 32
+  BATCH_SIZE: 16
   MAX_EPOCH: 100
   NUM_WORKERS: 16
   COMBINER:
     TYPE: 'bbn_mix'
 #    TYPE: 'default'
   OPTIMIZER:
-#    TYPE: 'SGD'
-    TYPE: 'ADAM'
-    BASE_LR: 0.0003
+    TYPE: 'SGD'
+#    TYPE: 'ADAM'
+    BASE_LR: 0.001
     MOMENTUM: 0.9
     WEIGHT_DECAY: 2e-4
   LR_SCHEDULER:

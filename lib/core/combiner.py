@@ -4,13 +4,14 @@ from lib.core.evaluate import accuracy
 
 
 class Combiner:
-    def __init__(self, cfg, device):
+    def __init__(self, cfg, device, l):
         self.cfg = cfg
         self.type = cfg.TRAIN.COMBINER.TYPE
         self.device = device
         self.epoch_number = cfg.TRAIN.MAX_EPOCH
         self.func = torch.nn.Softmax(dim=1)
         self.initilize_all_parameters()
+        self.l = l
 
     def initilize_all_parameters(self):
         self.alpha = 0.2
@@ -24,7 +25,7 @@ class Combiner:
 
     def forward(self, model, criterion, image, label, meta, **kwargs):
         return eval("self.{}".format(self.type))(
-            model, criterion, image, label, meta, **kwargs
+            model, criterion, image, label, meta, self.l, **kwargs
         )
 
     def default(self, model, criterion, image, label, **kwargs):
@@ -36,7 +37,7 @@ class Combiner:
 
         return loss, now_acc
 
-    def bbn_mix(self, model, criterion, image, label, meta, **kwargs):
+    def bbn_mix(self, model, criterion, image, label, meta, l, **kwargs):
 
         image_a, image_b = image.to(self.device), meta["sample_image"].to(self.device)
         label_a, label_b = label.to(self.device), meta["sample_label"].to(self.device)
@@ -46,13 +47,13 @@ class Combiner:
             model(image_b, feature_rb=True),
         )
 
-        l = 1 - ((self.epoch - 1) / self.div_epoch) ** 2  # parabolic decay
-        # l = 0.5  # fix
-        # l = math.cos((self.epoch-1) / self.div_epoch * math.pi /2)   # cosine decay
-        # l = 1 - (1 - ((self.epoch - 1) / self.div_epoch) ** 2) * 1  # parabolic increment
-        # l = 1 - (self.epoch-1) / self.div_epoch  # linear decay
-        # l = np.random.beta(self.alpha, self.alpha) # beta distribution
-        # l = 1 if self.epoch <= 120 else 0  # seperated stage
+        # l = 1 - ((self.epoch - 1) / self.div_epoch) ** 2  # parabolic decay
+        # # l = 0.5  # fix
+        # # l = math.cos((self.epoch-1) / self.div_epoch * math.pi /2)   # cosine decay
+        # # l = 1 - (1 - ((self.epoch - 1) / self.div_epoch) ** 2) * 1  # parabolic increment
+        # # l = 1 - (self.epoch-1) / self.div_epoch  # linear decay
+        # # l = np.random.beta(self.alpha, self.alpha) # beta distribution
+        # # l = 1 if self.epoch <= 120 else 0  # seperated stage
 
         mixed_feature = 2 * torch.cat((l * feature_a, (1 - l) * feature_b), dim=1)
         output = model(mixed_feature, classifier_flag=True)
