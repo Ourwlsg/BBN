@@ -34,9 +34,9 @@ LOSS:
   LOSS_TYPE: 'CrossEntropy'
 
 TRAIN:
-  BATCH_SIZE: 16
+  BATCH_SIZE: 24
   MAX_EPOCH: 100
-  NUM_WORKERS: 16
+  NUM_WORKERS: 12
   COMBINER:
     TYPE: 'bbn_mix'
 #    TYPE: 'default'

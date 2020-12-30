@@ -65,7 +65,7 @@ class Network(nn.Module):
         if "feature_flag" in kwargs or "feature_cb" in kwargs or "feature_rb" in kwargs:
             return self.extract_feature(x, **kwargs)
         elif "classifier_flag" in kwargs:
-            print("classifier_flag: ", x.shape)
+            # print("classifier_flag: ", x.shape)
             return self.classifier(x)
 
         x = self.backbone(x)
@@ -78,7 +78,7 @@ class Network(nn.Module):
     def extract_feature(self, x, **kwargs):
         if "bbn" in self.cfg.BACKBONE.TYPE:
             x = self.backbone(x, **kwargs)
-            print("extract_feature: ", x.shape)
+            # print("extract_feature: ", x.shape)
         else:
             x = self.backbone(x)
         x = self.module(x)
