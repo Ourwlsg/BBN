@@ -48,13 +48,15 @@ class Network(nn.Module):
             self.backbone = Efficientnet(self.cfg.BACKBONE.TYPE, pretrain, self.cfg, test=False)
         elif 'resnext' in self.cfg.BACKBONE.TYPE:
             self.backbone = bbn_resnext50(self.cfg, test=False)
-        else:
-            self.backbone = eval(self.cfg.BACKBONE.TYPE)(
+        elif 'bbn_res50' in self.cfg.BACKBONE.TYPE:
+            self.backbone = bbn_res50(
                 self.cfg,
                 pretrain=pretrain,
                 pretrained_model=cfg.BACKBONE.PRETRAINED_MODEL,
                 last_layer_stride=2,
             )
+        else:
+            print("backbone error!")
         self.module = self._get_module()
         self.classifier = self._get_classifer()
         self.feature_len = self.get_feature_length()
