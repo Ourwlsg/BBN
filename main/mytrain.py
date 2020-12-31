@@ -169,7 +169,7 @@ if __name__ == "__main__":
             if tensorboard_dir is not None:
                 dummy_input = torch.rand((1, 3) + (cfg.INPUT_SIZE, cfg.INPUT_SIZE)).to(device)
                 writer = SummaryWriter(log_dir=tensorboard_dir)
-                # writer.add_graph(model if cfg.CPU_MODE else model.module, (dummy_input,))
+                writer.add_graph(model if cfg.CPU_MODE else model.module, (dummy_input,))
             else:
                 writer = None
 
