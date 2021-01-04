@@ -75,12 +75,12 @@ if __name__ == "__main__":
     auto_resume = args.auto_resume
 
     l_formulas = {
+        'parabolic_decay': '1 - ((self.epoch - 1) / self.div_epoch) ** 2',  # parabolic decay
         'cosine_decay': 'math.cos((self.epoch-1) / self.div_epoch * math.pi /2)',  # cosine decay
         'linear_decay': '1 - (self.epoch-1) / self.div_epoch',  # linear decay
         'beta_distribution': 'np.random.beta(self.alpha, self.alpha)',  # beta distribution
         'fix_0.5': '0.5',  # fix
         'seperated_stage': '1 if self.epoch <= 30 else 0',  # seperated stage
-        'parabolic_decay': '1 - ((self.epoch - 1) / self.div_epoch) ** 2',  # parabolic decay
         'parabolic_increment': '1 - (1 - ((self.epoch - 1) / self.div_epoch) ** 2) * 1',  # parabolic increment
     }
 
@@ -112,7 +112,6 @@ if __name__ == "__main__":
                 'LDAMLoss': lambda: LDAMLoss(para_dict=para_dict),
                 'SymmetricCrossEntropy': lambda: SymmetricCrossEntropy(alpha=0.1, beta=1.0, num_classes=5),
                 # 'bi_tempered_logistic_loss': lambda: bi_tempered_logistic_loss(),
-
 
             }[cfg.LOSS.LOSS_TYPE]()
 
@@ -242,21 +241,10 @@ if __name__ == "__main__":
                 )
                 lr = optimizer.param_groups[0]['lr']
                 writer.add_scalar('learning_rate', lr, epoch)
-                model_save_path = os.path.join(
-                    model_dir,
-                    "epoch_{}.pth".format(epoch),
-                )
-                if epoch % cfg.SAVE_STEP == 0:
-                    torch.save({
-                        'state_dict': model.state_dict(),
-                        'epoch': epoch,
-                        'best_result': best_result,
-                        'best_epoch': best_epoch,
-                        'scheduler': scheduler.state_dict(),
-                        'optimizer': optimizer.state_dict()
-                    }, model_save_path)
 
                 loss_dict, acc_dict = {"train_loss": train_loss}, {"train_acc": train_acc}
+
+                # validation
                 if cfg.VALID_STEP != -1 and epoch % cfg.VALID_STEP == 0:
                     valid_acc, valid_loss, result_epoch = valid_model(
                         validLoader, epoch, model, cfg, criterion, logger, device, target_names, writer=writer
@@ -279,6 +267,19 @@ if __name__ == "__main__":
                             best_epoch, best_result * 100
                         )
                     )
+
+                # save checkpoint
+                model_save_path = os.path.join(model_dir, "epoch_{}_{}.pth".format(epoch, valid_acc))
+                if epoch % cfg.SAVE_STEP == 0:
+                    torch.save({
+                        'state_dict': model.state_dict(),
+                        'epoch': epoch,
+                        'best_result': best_result,
+                        'best_epoch': best_epoch,
+                        'scheduler': scheduler.state_dict(),
+                        'optimizer': optimizer.state_dict()
+                    }, model_save_path)
+
                 if cfg.TRAIN.TENSORBOARD.ENABLE:
                     writer.add_scalars("scalar/alpha", combiner.getL(), epoch)
                     writer.add_scalars("scalar/acc", acc_dict, epoch)
