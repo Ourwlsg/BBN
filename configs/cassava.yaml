@@ -36,7 +36,7 @@ LOSS:
 TRAIN:
   BATCH_SIZE: 26
   MAX_EPOCH: 50
-  NUM_WORKERS: 12
+  NUM_WORKERS: 13
   COMBINER:
     TYPE: 'bbn_mix'
 #    TYPE: 'default'
