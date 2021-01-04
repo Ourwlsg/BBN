@@ -1,5 +1,8 @@
 import sys
 
+from lib.loss.bi_tempere_loss import bi_tempered_logistic_loss
+from lib.loss.symmetric_CE_loss import SymmetricCrossEntropy
+
 sys.path.insert(0, '/workspace/BBN/')
 import main._init_paths
 from lib.loss import *
@@ -102,8 +105,19 @@ if __name__ == "__main__":
                 "cfg": cfg,
                 "device": device,
             }
+
+            criterion = {
+                'CrossEntropy': lambda: CrossEntropy(para_dict=para_dict),
+                'CSCE': lambda: CSCE(para_dict=para_dict),
+                'LDAMLoss': lambda: LDAMLoss(para_dict=para_dict),
+                'SymmetricCrossEntropy': lambda: SymmetricCrossEntropy(alpha=0.1, beta=1.0, num_classes=5),
+                # 'bi_tempered_logistic_loss': lambda: bi_tempered_logistic_loss(),
+
+
+            }[cfg.LOSS.LOSS_TYPE]()
+
             # CrossEntropy
-            criterion = eval(cfg.LOSS.LOSS_TYPE)(para_dict=para_dict)
+            # criterion = eval(cfg.LOSS.LOSS_TYPE)(para_dict=para_dict)
             epoch_number = cfg.TRAIN.MAX_EPOCH
 
             # ----- BEGIN MODEL BUILDER -----

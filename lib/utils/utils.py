@@ -5,6 +5,7 @@ import os
 import torch
 from lib.utils.lr_scheduler import WarmupMultiStepLR
 from lib.net.network import Network
+from lib.optimizer.adam_series import RAdam, PlainRAdam, AdamW
 
 
 def create_logger(cfg):
@@ -39,22 +40,55 @@ def get_optimizer(cfg, model):
     for name, p in model.named_parameters():
         if p.requires_grad:
             params.append({"params": p})
+    # params = filter(lambda p: p.requires_grad, model.parameters())
 
-    if cfg.TRAIN.OPTIMIZER.TYPE == "SGD":
-        optimizer = torch.optim.SGD(
-            params,
-            lr=base_lr,
-            momentum=cfg.TRAIN.OPTIMIZER.MOMENTUM,
-            weight_decay=cfg.TRAIN.OPTIMIZER.WEIGHT_DECAY,
-            nesterov=True,
-        )
-    elif cfg.TRAIN.OPTIMIZER.TYPE == "ADAM":
-        optimizer = torch.optim.Adam(
-            params,
-            lr=base_lr,
-            betas=(0.9, 0.999),
-            weight_decay=cfg.TRAIN.OPTIMIZER.WEIGHT_DECAY,
-        )
+    # if cfg.TRAIN.OPTIMIZER.TYPE == "SGD":
+    #     optimizer = torch.optim.SGD(
+    #         params,
+    #         lr=base_lr,
+    #         momentum=cfg.TRAIN.OPTIMIZER.MOMENTUM,
+    #         weight_decay=cfg.TRAIN.OPTIMIZER.WEIGHT_DECAY,
+    #         nesterov=True,
+    #     )
+    # elif cfg.TRAIN.OPTIMIZER.TYPE == "ADAM":
+    #     optimizer = torch.optim.Adam(
+    #         params,
+    #         lr=base_lr,
+    #         betas=(0.9, 0.999),
+    #         weight_decay=cfg.TRAIN.OPTIMIZER.WEIGHT_DECAY,
+    #     )
+    optimizer = {
+        "ADAM": lambda: torch.optim.Adam(params,
+                                         lr=base_lr,
+                                         betas=(0.9, 0.999),
+                                         weight_decay=cfg.TRAIN.OPTIMIZER.WEIGHT_DECAY,
+                                         eps=1e-08),
+
+        "RMSprop": lambda: torch.optim.RMSprop(params,
+                                               lr=base_lr,
+                                               momentum=cfg.TRAIN.OPTIMIZER.MOMENTUM,
+                                               eps=1e-08,
+                                               weight_decay=cfg.TRAIN.OPTIMIZER.WEIGHT_DECAY),  # 2e-4
+
+        "SGD": lambda: torch.optim.SGD(params,
+                                       lr=base_lr,
+                                       momentum=cfg.TRAIN.OPTIMIZER.MOMENTUM,
+                                       weight_decay=cfg.TRAIN.OPTIMIZER.WEIGHT_DECAY,
+                                       nesterov=True, ),
+
+        "Radam": lambda: RAdam(params,
+                               lr=base_lr,
+                               weight_decay=cfg.TRAIN.OPTIMIZER.WEIGHT_DECAY),
+
+        "PlainRAdam": lambda: PlainRAdam(params,
+                                         lr=base_lr,
+                                         weight_decay=cfg.TRAIN.OPTIMIZER.WEIGHT_DECAY),
+
+        "AdamW": lambda: AdamW(params,
+                               lr=base_lr,
+                               weight_decay=cfg.TRAIN.OPTIMIZER.WEIGHT_DECAY),
+
+    }[cfg.TRAIN.OPTIMIZER.TYPE]()
     return optimizer
 
 

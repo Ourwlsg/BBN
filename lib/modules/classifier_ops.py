@@ -12,3 +12,16 @@ class FCNorm(nn.Module):
     def forward(self, x):
         out = F.linear(F.normalize(x), F.normalize(self.weight))
         return out
+
+
+class FC2(nn.Module):
+    def __init__(self, num_features, num_classes, bias):
+        super(FC2, self).__init__()
+        self.num_features = num_features
+        self.num_classes = num_classes
+        self.bias_flag = bias
+
+    def forward(self, x):
+        x = nn.Linear(self.num_features, 2048, bias=self.bias_flag)(x)
+        out = nn.Linear(2048, self.num_classes, bias=self.bias_flag)(x)
+        return out

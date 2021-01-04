@@ -28,10 +28,15 @@ MODULE:
 
 CLASSIFIER:
   TYPE: 'FC'
+#  TYPE: 'FC2'
+#  TYPE: 'FCNorm'  # for LDAM Loss
   BIAS: True
 
 LOSS:
   LOSS_TYPE: 'CrossEntropy'
+#  LOSS_TYPE: 'SymmetricCrossEntropy'
+#  LOSS_TYPE: 'LDAMLoss'
+#  LOSS_TYPE: 'CSCE'
 
 TRAIN:
   BATCH_SIZE: 26
@@ -43,11 +48,17 @@ TRAIN:
   OPTIMIZER:
     TYPE: 'SGD'
 #    TYPE: 'ADAM'
+#    TYPE: 'RMSprop'
+#    TYPE: 'Radam'
+#    TYPE: 'PlainRAdam'
+#    TYPE: 'AdamW'
     BASE_LR: 0.001
     MOMENTUM: 0.9
-    WEIGHT_DECAY: 2e-4
+    WEIGHT_DECAY: 2e-5
   LR_SCHEDULER:
     TYPE: 'cosine'
+#    TYPE: 'multistep'
+#    TYPE: 'warmup'
     LR_STEP: [60, 80]
     LR_FACTOR: 0.1
     WARM_EPOCH: 5
@@ -59,7 +70,7 @@ TRAIN:
     DUAL_SAMPLER:
       ENABLE: True
       TYPE: 'reverse'
-      #"balance"
+#      TYPE: 'balance'
 
 #TRANSFORMS:
 #  TRAIN_TRANSFORMS: ('random_crop', 'random_horizontal_flip')

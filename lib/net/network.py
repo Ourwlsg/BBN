@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from lib.backbone import res50, bbn_res50, res32_cifar, bbn_res32_cifar, _resnext
 from lib.models import EfficientNet, load_state_dict_from_url, model_urls, LOCAL_PRETRAINED, Bottleneck
-from lib.modules import GAP, Identity, FCNorm
+from lib.modules import GAP, Identity, FCNorm, FC2
 
 
 def Efficientnet(model_name, pretrained, cfg, test=False):
@@ -141,6 +141,9 @@ class Network(nn.Module):
         num_features = self.get_feature_length()
         if self.cfg.CLASSIFIER.TYPE == "FCNorm":
             classifier = FCNorm(num_features, self.num_classes)
+        elif self.cfg.CLASSIFIER.TYPE == "FC2":
+            # classifier = nn.Linear(num_features, self.num_classes, bias=bias_flag)
+            classifier = FC2(num_features, self.num_classes, bias=bias_flag)
         elif self.cfg.CLASSIFIER.TYPE == "FC":
             classifier = nn.Linear(num_features, self.num_classes, bias=bias_flag)
         else:
