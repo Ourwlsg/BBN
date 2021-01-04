@@ -4,14 +4,14 @@ from lib.core.evaluate import accuracy
 
 
 class Combiner:
-    def __init__(self, cfg, device, l):
+    def __init__(self, cfg, device, l_format):
         self.cfg = cfg
         self.type = cfg.TRAIN.COMBINER.TYPE
         self.device = device
         self.epoch_number = cfg.TRAIN.MAX_EPOCH
         self.func = torch.nn.Softmax(dim=1)
         self.initilize_all_parameters()
-        self.l = l
+        self.l_format = l_format
 
     def initilize_all_parameters(self):
         self.alpha = 0.2
@@ -22,6 +22,12 @@ class Combiner:
 
     def reset_epoch(self, epoch):
         self.epoch = epoch
+
+    def reset_l(self, l_format):
+        self.l = eval(l_format)
+
+    def getL(self):
+        return self.l
 
     def forward(self, model, criterion, image, label, meta, **kwargs):
         return eval("self.{}".format(self.type))(
@@ -46,7 +52,7 @@ class Combiner:
             model(image_a, feature_cb=True),
             model(image_b, feature_rb=True),
         )
-        l = eval(l)
+        l = self.l
         # l = 1 - ((self.epoch - 1) / self.div_epoch) ** 2  # parabolic decay
         # # l = 0.5  # fix
         # # l = math.cos((self.epoch-1) / self.div_epoch * math.pi /2)   # cosine decay

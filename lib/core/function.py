@@ -16,6 +16,7 @@ def train_model(
         epoch_number,
         optimizer,
         combiner,
+        l_format,
         criterion,
         cfg,
         logger,
@@ -27,6 +28,7 @@ def train_model(
         model.train()
 
     combiner.reset_epoch(epoch)
+    combiner.reset_l(l_format)
 
     if cfg.LOSS.LOSS_TYPE in ['LDAMLoss', 'CSCE']:
         criterion.reset_epoch(epoch)

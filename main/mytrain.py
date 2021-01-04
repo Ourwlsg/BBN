@@ -82,7 +82,7 @@ if __name__ == "__main__":
     }
 
     for k in K_FOLD:
-        for l_name, l in l_formulas.items():
+        for l_name, l_formula in l_formulas.items():
             print('fold_' + str(k) + f' {l_name} is running...')
             train_label_dir = DIR_CV + 'fold_' + str(k) + '/train.txt'
             val_label_dir = DIR_CV + 'fold_' + str(k) + '/val.txt'
@@ -112,7 +112,7 @@ if __name__ == "__main__":
             # model = torch.nn.DataParallel(model)
             # cudnn.benchmark = True
 
-            combiner = Combiner(cfg, device, l)
+            combiner = Combiner(cfg, device, l_formula)
             optimizer = get_optimizer(cfg, model)
             scheduler = get_scheduler(cfg, optimizer)
             # ----- END MODEL BUILDER -----
@@ -220,6 +220,7 @@ if __name__ == "__main__":
                     epoch_number,
                     optimizer,
                     combiner,
+                    l_formula,
                     criterion,
                     cfg,
                     logger,
@@ -265,6 +266,7 @@ if __name__ == "__main__":
                         )
                     )
                 if cfg.TRAIN.TENSORBOARD.ENABLE:
+                    writer.add_scalars("scalar/alpha", combiner.getL(), epoch)
                     writer.add_scalars("scalar/acc", acc_dict, epoch)
                     writer.add_scalars("scalar/loss", loss_dict, epoch)
                     writer.add_scalar('ACC/val', result_epoch['accuracy'], epoch)
