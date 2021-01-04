@@ -61,7 +61,7 @@ if __name__ == "__main__":
     DIR_CV = '../cassava/data/new_cv20/'
     target_names = ['class 0', 'class 1', 'class 2', 'class 3', 'class 4']
     GPU_ID = '1'
-    K_FOLD = [0]
+    K_FOLD = [4]
 
     os.environ["CUDA_VISIBLE_DEVICES"] = GPU_ID
     args = parse_args()
@@ -72,12 +72,12 @@ if __name__ == "__main__":
     auto_resume = args.auto_resume
 
     l_formulas = {
-        'parabolic_decay': '1 - ((self.epoch - 1) / self.div_epoch) ** 2',  # parabolic decay
         'cosine_decay': 'math.cos((self.epoch-1) / self.div_epoch * math.pi /2)',  # cosine decay
-        'fix_0.5': '0.5',  # fix
         'linear_decay': '1 - (self.epoch-1) / self.div_epoch',  # linear decay
         'beta_distribution': 'np.random.beta(self.alpha, self.alpha)',  # beta distribution
-        'seperated_stage': '1 if self.epoch <= 60 else 0',  # seperated stage
+        'fix_0.5': '0.5',  # fix
+        'seperated_stage': '1 if self.epoch <= 30 else 0',  # seperated stage
+        'parabolic_decay': '1 - ((self.epoch - 1) / self.div_epoch) ** 2',  # parabolic decay
         'parabolic_increment': '1 - (1 - ((self.epoch - 1) / self.div_epoch) ** 2) * 1',  # parabolic increment
     }
 
