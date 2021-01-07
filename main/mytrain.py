@@ -89,8 +89,8 @@ if __name__ == "__main__":
             print('fold_' + str(k) + f' {l_name} is running...')
             train_label_dir = DIR_CV + 'fold_' + str(k) + '/train.txt'
             val_label_dir = DIR_CV + 'fold_' + str(k) + '/val.txt'
-            train_set = eval(cfg.DATASET.DATASET)(train_label_dir, "train", cfg)
-            valid_set = eval(cfg.DATASET.DATASET)(val_label_dir, "valid", cfg)
+            train_set = IMBALANCECASSAVA(train_label_dir, cfg, mode="train",  transform_name="RandomAugment")
+            valid_set = IMBALANCECASSAVA(val_label_dir, cfg, mode="valid",  transform_name=None)
 
             annotations = train_set.get_annotations()
             num_classes = train_set.get_num_classes()

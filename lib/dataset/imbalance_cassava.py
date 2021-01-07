@@ -5,13 +5,14 @@ import ast
 import torch
 import torchvision
 import torchvision.transforms as transforms
-from lib.config.mydefault import _C as cfg, update_config
+from lib.config.mydefault import update_config
 from torch.utils.data import Dataset
 import numpy as np
 from PIL import Image
 import random
 import cv2
 import albumentations as A
+from lib.data_transform.rand_augment import RandomAugment
 
 mean, std = [0.430316, 0.496727, 0.313513], [0.238024, 0.240754, 0.228859]
 
@@ -81,7 +82,7 @@ class IMBALANCECASSAVA(Dataset):
 
     # train_set = eval(cfg.DATASET.DATASET)("train", cfg)
     # valid_set = eval(cfg.DATASET.DATASET)("valid", cfg)
-    def __init__(self, label_file, mode, cfg, imb_type='exp'):
+    def __init__(self, label_file, cfg, mode, transform_name, imb_type='exp'):
 
         with open(label_file, 'r') as f:
             # label_file的格式, (label_file image_label)
@@ -91,6 +92,7 @@ class IMBALANCECASSAVA(Dataset):
         train = True if mode == "train" else False
         self.cfg = cfg
         self.train = train
+        self.transform_name = transform_name
         self.dual_sample = True if cfg.TRAIN.SAMPLER.DUAL_SAMPLER.ENABLE and self.train else False
         rand_number = cfg.DATASET.IMBALANCECASSAVA.RANDOM_SEED
         if self.train:
@@ -99,7 +101,10 @@ class IMBALANCECASSAVA(Dataset):
             # imb_factor = self.cfg.DATASET.IMBALANCECASSAVA.RATIO
             # img_num_list = self.get_img_num_per_cls(self.cls_num, imb_type, imb_factor)
             # self.gen_imbalanced_data(img_num_list)
-            self.transform = get_train_transform(size=cfg.INPUT_SIZE)
+            if self.transform_name == 'RandomAugment':
+                self.transform = RandomAugment()
+            else:
+                self.transform = get_train_transform(size=cfg.INPUT_SIZE)
         else:
             self.transform = get_test_transform(size=cfg.INPUT_SIZE)
         print("{} Mode: Contain {} images".format(mode, len(self.data)))
@@ -200,6 +205,7 @@ class IMBALANCECASSAVA(Dataset):
             if sample_img_row is None:
                 print(sample_img_path)
             sample_img_row = cv2.cvtColor(sample_img_row, cv2.COLOR_BGR2RGB)
+
             sample_img = self.transform(image=sample_img_row)['image']
             meta['sample_image'] = torch.from_numpy(sample_img).permute(2, 0, 1)
             meta['sample_label'] = sample_label
