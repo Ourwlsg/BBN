@@ -152,10 +152,10 @@ if __name__ == "__main__":
             )
 
             # close loop
-            model_dir = os.path.join(cfg.OUTPUT_DIR, cfg.NAME, f"fold_{k}_l_{l_name}", "models")
-            code_dir = os.path.join(cfg.OUTPUT_DIR, cfg.NAME, f"fold_{k}_l_{l_name}", "codes")
+            model_dir = os.path.join(cfg.OUTPUT_DIR, cfg.NAME, f"fold_{k}_alpha_{l_name}", "models")
+            code_dir = os.path.join(cfg.OUTPUT_DIR, cfg.NAME, f"fold_{k}_alpha_{l_name}", "codes")
             tensorboard_dir = (
-                os.path.join(cfg.OUTPUT_DIR, cfg.NAME, f"fold_{k}_l_{l_name}", "tensorboard")
+                os.path.join(cfg.OUTPUT_DIR, cfg.NAME, f"fold_{k}_alpha_{l_name}", "tensorboard")
                 if cfg.TRAIN.TENSORBOARD.ENABLE
                 else None
             )
