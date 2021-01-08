@@ -77,6 +77,7 @@ def get_test_transform(mean=mean, std=std, size=0):
     ])
 
 
+# TODO 在rand augment后添加get_test_transform
 class IMBALANCECASSAVA(Dataset):
     cls_num = 5
 
@@ -309,4 +310,3 @@ if __name__ == '__main__':
     # val_loader = iter(val_dataloader)
     # val_data, val_label, val_meta = next(val_loader)
     # print(val_data.shape, val_label, val_meta)
-

@@ -335,7 +335,6 @@ class RandomAugment(object):
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
-
     a = RandomAugment(N=2, M=10)
     # img = np.random.randn(32, 32, 3)
     # img.astype('int64')
@@ -360,6 +359,7 @@ if __name__ == '__main__':
     # from torchvision.transforms import transforms
     # from RandAugment import RandAugment
     # from PIL import Image
+    # import matplotlib.pyplot as plt
     # import PIL
     # import imageio
     #
@@ -375,11 +375,12 @@ if __name__ == '__main__':
     # transform_train.transforms.insert(0, RandAugment(n=2, m=10))
     # imgPath = '/home/zhucc/kaggle/pytorch_classification/data/train/1/178976656.jpg'
     # img = Image.open(imgPath).convert('RGB')
-    # print(img.size)
-    # img2 = transform_train(img)
-    # print(img2.size)
-    # plt.subplot(121)
-    # plt.imshow(img)
-    # plt.subplot(122)
-    # plt.imshow(img2)
-    # plt.show()
+    # for i in range(20):
+    #     img2 = transform_train(img)
+    #     plt.subplot(121)
+    #     plt.imshow(img)
+    #     plt.subplot(122)
+    #     plt.imshow(img2)
+    #     plt.savefig(str(i) + "_.png")
+    #     plt.close()
+    #     # plt.show()
