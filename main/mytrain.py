@@ -283,9 +283,9 @@ if __name__ == "__main__":
                     }, model_save_path)
 
                 if cfg.TRAIN.TENSORBOARD.ENABLE:
-                    writer.add_scalars("scalar/alpha", combiner.getL(), epoch)
                     writer.add_scalars("scalar/acc", acc_dict, epoch)
                     writer.add_scalars("scalar/loss", loss_dict, epoch)
+                    writer.add_scalar("scalar/alpha", combiner.getL(), epoch)
                     writer.add_scalar('ACC/val', result_epoch['accuracy'], epoch)
                     for metric in ['precision', 'recall', 'f1-score']:
                         writer.add_scalars(f'Metrics/{metric}',

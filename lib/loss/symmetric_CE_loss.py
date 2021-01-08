@@ -14,8 +14,8 @@ class SymmetricCrossEntropy(nn.Module):
     def forward(self, logits, targets, reduction='mean'):
         onehot_targets = torch.eye(self.num_classes)[targets].cuda()
         ce_loss = F.cross_entropy(logits, targets, reduction=reduction)
-        # rce_loss = (-onehot_targets * logits.softmax(1).clamp(1e-7, 1.0).log()).sum(1)
-        rce_loss = (-onehot_targets * logits.softmax(1).clamp(1e-3, 1.0).log()).sum(1)
+        rce_loss = (-onehot_targets * logits.softmax(1).clamp(1e-7, 1.0).log()).sum(1)
+        # rce_loss = (-onehot_targets * logits.softmax(1).clamp(1e-3, 1.0).log()).sum(1)
         if reduction == 'mean':
             rce_loss = rce_loss.mean()
         elif reduction == 'sum':
