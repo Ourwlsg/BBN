@@ -1,4 +1,4 @@
-NAME: 'BBN.cassava.new_cv20.resnext50.50epoch'
+NAME: 'BBN.cassava.new_cv20.resnext50.SymmetricCE.50epoch'
 OUTPUT_DIR: './output/cassava/new_cv20'
 SHOW_STEP: 50
 SAVE_STEP: 5
@@ -33,8 +33,8 @@ CLASSIFIER:
   BIAS: True
 
 LOSS:
-  LOSS_TYPE: 'CrossEntropy'
-#  LOSS_TYPE: 'SymmetricCrossEntropy'
+#  LOSS_TYPE: 'CrossEntropy'
+  LOSS_TYPE: 'SymmetricCrossEntropy'
 #  LOSS_TYPE: 'LDAMLoss'
 #  LOSS_TYPE: 'CSCE'
 
@@ -46,13 +46,13 @@ TRAIN:
     TYPE: 'bbn_mix'
 #    TYPE: 'default'
   OPTIMIZER:
-    TYPE: 'SGD'
+#    TYPE: 'SGD'
 #    TYPE: 'ADAM'
 #    TYPE: 'RMSprop'
-#    TYPE: 'Radam'
+    TYPE: 'Radam'
 #    TYPE: 'PlainRAdam'
 #    TYPE: 'AdamW'
-    BASE_LR: 0.001
+    BASE_LR: 0.0001
     MOMENTUM: 0.9
     WEIGHT_DECAY: 2e-5
   LR_SCHEDULER:

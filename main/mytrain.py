@@ -64,7 +64,7 @@ if __name__ == "__main__":
     DIR_CV = '../cassava/data/new_cv20/'
     target_names = ['class 0', 'class 1', 'class 2', 'class 3', 'class 4']
     GPU_ID = '1'
-    K_FOLD = [4]
+    K_FOLD = [0, 1, 2, 3, 4]
 
     os.environ["CUDA_VISIBLE_DEVICES"] = GPU_ID
     args = parse_args()
@@ -76,12 +76,12 @@ if __name__ == "__main__":
 
     l_formulas = {
         'parabolic_decay': '1 - ((self.epoch - 1) / self.div_epoch) ** 2',  # parabolic decay
-        'cosine_decay': 'math.cos((self.epoch-1) / self.div_epoch * math.pi /2)',  # cosine decay
-        'linear_decay': '1 - (self.epoch-1) / self.div_epoch',  # linear decay
-        'beta_distribution': 'np.random.beta(self.alpha, self.alpha)',  # beta distribution
-        'fix_0.5': '0.5',  # fix
-        'seperated_stage': '1 if self.epoch <= 30 else 0',  # seperated stage
-        'parabolic_increment': '1 - (1 - ((self.epoch - 1) / self.div_epoch) ** 2) * 1',  # parabolic increment
+        # 'linear_decay': '1 - (self.epoch-1) / self.div_epoch',  # linear decay
+        # 'cosine_decay': 'math.cos((self.epoch-1) / self.div_epoch * math.pi /2)',  # cosine decay
+        # 'beta_distribution': 'np.random.beta(self.alpha, self.alpha)',  # beta distribution
+        # 'fix_0.5': '0.5',  # fix
+        # 'seperated_stage': '1 if self.epoch <= 25 else 0',  # seperated stage
+        # 'parabolic_increment': '1 - (1 - ((self.epoch - 1) / self.div_epoch) ** 2) * 1',  # parabolic increment
     }
 
     for k in K_FOLD:
@@ -89,8 +89,10 @@ if __name__ == "__main__":
             print('fold_' + str(k) + f' {l_name} is running...')
             train_label_dir = DIR_CV + 'fold_' + str(k) + '/train.txt'
             val_label_dir = DIR_CV + 'fold_' + str(k) + '/val.txt'
-            train_set = IMBALANCECASSAVA(train_label_dir, cfg, mode="train",  transform_name="RandomAugment")
-            valid_set = IMBALANCECASSAVA(val_label_dir, cfg, mode="valid",  transform_name=None)
+            # train_set = IMBALANCECASSAVA(train_label_dir, cfg, mode="train", transform_name="RandomAugment")
+            train_set = IMBALANCECASSAVA(train_label_dir, cfg, mode="train", transform_name="light_augment")
+
+            valid_set = IMBALANCECASSAVA(val_label_dir, cfg, mode="valid", transform_name=None)
 
             annotations = train_set.get_annotations()
             num_classes = train_set.get_num_classes()

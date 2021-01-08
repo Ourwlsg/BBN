@@ -318,22 +318,25 @@ class RandomAugment(object):
         return [(op, 1., self.M) for op in sampled_ops]
 
     def __call__(self, **data):
-        print(data)
+        # print(data)
         ops = self.get_random_ops()
+        print(ops)
         for name, prob, level in ops:
             if np.random.random() > prob:
                 continue
             args = arg_dict[name](level)
+
             img = func_dict[name](list(data.values())[0], *args)
         img = cutout_func(img, 64, replace_value)
         data = {list(data.keys())[0]: img}
         return data
+        # return ops, data
 
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
 
-    a = RandomAugment()
+    a = RandomAugment(N=2, M=10)
     # img = np.random.randn(32, 32, 3)
     # img.astype('int64')
     # a(img)
@@ -341,13 +344,18 @@ if __name__ == '__main__':
     imgPath = '/home/zhucc/kaggle/pytorch_classification/data/train/1/178976656.jpg'
     img = cv2.imread(imgPath)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    img2 = a(image=img)
-    plt.subplot(121)
-    plt.imshow(img)
-    plt.subplot(122)
-    plt.imshow(img2["image"])
-    plt.show()
-
+    for i in range(20):
+        plt.figure(figsize=(16, 8))
+        ops, img2 = a(image=img)
+        plt.subplot(121)
+        plt.imshow(img)
+        plt.subplot(122)
+        plt.imshow(img2["image"])
+        # plt.show()
+        name, prob, level = ops[0]
+        name2, prob2, level2 = ops[1]
+        plt.savefig(name+"_"+name+str(i)+"_.png")
+        plt.close()
     #################################################################################
     # from torchvision.transforms import transforms
     # from RandAugment import RandAugment
