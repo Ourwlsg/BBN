@@ -63,7 +63,7 @@ def parse_args():
 if __name__ == "__main__":
     DIR_CV = '../cassava/data/new_cv20/'
     target_names = ['class 0', 'class 1', 'class 2', 'class 3', 'class 4']
-    GPU_ID = '0'
+    GPU_ID = '1'
     K_FOLD = [0, 1, 2, 3, 4]
 
     os.environ["CUDA_VISIBLE_DEVICES"] = GPU_ID
