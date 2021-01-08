@@ -1,7 +1,7 @@
 import sys
 
-from lib.loss.bi_tempere_loss import bi_tempered_logistic_loss
-from lib.loss.symmetric_CE_loss import SymmetricCrossEntropy
+# from lib.loss.bi_tempere_loss import bi_tempered_logistic_loss
+# from lib.loss.symmetric_CE_loss import SymmetricCrossEntropy
 
 sys.path.insert(0, '/workspace/BBN/')
 import main._init_paths
