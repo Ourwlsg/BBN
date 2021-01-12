@@ -106,7 +106,7 @@ class IMBALANCECASSAVA(Dataset):
             # img_num_list = self.get_img_num_per_cls(self.cls_num, imb_type, imb_factor)
             # self.gen_imbalanced_data(img_num_list)
             if self.transform_name == 'RandomAugment':
-                self.transform = get_test_transform()
+                self.transform = get_test_transform(size=cfg.INPUT_SIZE)
             else:
                 self.transform = get_train_transform(size=cfg.INPUT_SIZE)
         else:
