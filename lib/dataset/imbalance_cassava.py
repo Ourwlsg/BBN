@@ -217,7 +217,7 @@ class IMBALANCECASSAVA(Dataset):
 
         if self.transform is not None:
             if self.transform_name == 'RandomAugment':
-                img = self.augment(data=img)["image"]
+                img = self.augment(data=img)["data"]
             img = self.transform(image=img)['image']
 
         return torch.from_numpy(img).permute(2, 0, 1), target, meta
