@@ -46,13 +46,13 @@ TRAIN:
     TYPE: 'bbn_mix'
 #    TYPE: 'default'
   OPTIMIZER:
-#    TYPE: 'SGD'
+    TYPE: 'SGD'
 #    TYPE: 'ADAM'
 #    TYPE: 'RMSprop'
-    TYPE: 'Radam'
+#    TYPE: 'Radam'
 #    TYPE: 'PlainRAdam'
 #    TYPE: 'AdamW'
-    BASE_LR: 0.0001
+    BASE_LR: 0.001
     MOMENTUM: 0.9
     WEIGHT_DECAY: 2e-5
   LR_SCHEDULER:

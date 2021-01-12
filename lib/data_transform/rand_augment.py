@@ -4,6 +4,9 @@ import cv2
 
 
 ## aug functions
+from tqdm import tqdm
+
+
 def identity_func(img):
     return img
 
@@ -272,13 +275,13 @@ def rotate_level_to_args(MAX_LEVEL, replace_value):
 func_dict = {
     'Identity': identity_func,
     'AutoContrast': autocontrast_func,
-    'Equalize': equalize_func,
+    # #'Equalize': equalize_func,
     'Rotate': rotate_func,
     'Solarize': solarize_func,
     'Color': color_func,
     'Contrast': contrast_func,
     'Brightness': brightness_func,
-    'Sharpness': sharpness_func,
+    # #'Sharpness': sharpness_func,
     'ShearX': shear_x_func,
     'TranslateX': translate_x_func,
     'TranslateY': translate_y_func,
@@ -320,22 +323,21 @@ class RandomAugment(object):
     def __call__(self, **data):
         # print(data)
         ops = self.get_random_ops()
-        print(ops)
+        # print(ops)
         for name, prob, level in ops:
             if np.random.random() > prob:
                 continue
             args = arg_dict[name](level)
-
-            img = func_dict[name](list(data.values())[0], *args)
-        img = cutout_func(img, 64, replace_value)
-        data = {list(data.keys())[0]: img}
+            image = func_dict[name](list(data.values())[0], *args)
+            image = cutout_func(image, 32, replace_value)
+        data = {list(data.keys())[0]: image}
         return data
         # return ops, data
 
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
-    a = RandomAugment(N=2, M=10)
+    a = RandomAugment(N=1, M=10)
     # img = np.random.randn(32, 32, 3)
     # img.astype('int64')
     # a(img)
@@ -343,7 +345,7 @@ if __name__ == '__main__':
     imgPath = '/home/zhucc/kaggle/pytorch_classification/data/train/1/178976656.jpg'
     img = cv2.imread(imgPath)
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    for i in range(20):
+    for i in tqdm(range(20)):
         plt.figure(figsize=(16, 8))
         ops, img2 = a(image=img)
         plt.subplot(121)
@@ -352,8 +354,7 @@ if __name__ == '__main__':
         plt.imshow(img2["image"])
         # plt.show()
         name, prob, level = ops[0]
-        name2, prob2, level2 = ops[1]
-        plt.savefig(name+"_"+name+str(i)+"_.png")
+        plt.savefig(name+"_"+str(i)+"_.png")
         plt.close()
     #################################################################################
     # from torchvision.transforms import transforms

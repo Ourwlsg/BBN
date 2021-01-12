@@ -5,6 +5,8 @@ import ast
 import torch
 import torchvision
 import torchvision.transforms as transforms
+
+
 from lib.config.mydefault import update_config
 from torch.utils.data import Dataset
 import numpy as np
@@ -77,7 +79,7 @@ def get_test_transform(mean=mean, std=std, size=0):
     ])
 
 
-# TODO 在rand augment后添加get_test_transform
+# TODOed 在rand augment后添加get_test_transform
 class IMBALANCECASSAVA(Dataset):
     cls_num = 5
 
@@ -97,13 +99,14 @@ class IMBALANCECASSAVA(Dataset):
         self.dual_sample = True if cfg.TRAIN.SAMPLER.DUAL_SAMPLER.ENABLE and self.train else False
         rand_number = cfg.DATASET.IMBALANCECASSAVA.RANDOM_SEED
         if self.train:
+            self.augment = RandomAugment(N=2, M=7)
             np.random.seed(rand_number)
             random.seed(rand_number)
             # imb_factor = self.cfg.DATASET.IMBALANCECASSAVA.RATIO
             # img_num_list = self.get_img_num_per_cls(self.cls_num, imb_type, imb_factor)
             # self.gen_imbalanced_data(img_num_list)
             if self.transform_name == 'RandomAugment':
-                self.transform = RandomAugment()
+                self.transform = get_test_transform()
             else:
                 self.transform = get_train_transform(size=cfg.INPUT_SIZE)
         else:
@@ -206,12 +209,15 @@ class IMBALANCECASSAVA(Dataset):
             if sample_img_row is None:
                 print(sample_img_path)
             sample_img_row = cv2.cvtColor(sample_img_row, cv2.COLOR_BGR2RGB)
-
+            if self.transform_name == 'RandomAugment':
+                sample_img_row = self.augment(data=sample_img_row)["data"]
             sample_img = self.transform(image=sample_img_row)['image']
             meta['sample_image'] = torch.from_numpy(sample_img).permute(2, 0, 1)
             meta['sample_label'] = sample_label
 
         if self.transform is not None:
+            if self.transform_name == 'RandomAugment':
+                img = self.augment(data=img)["image"]
             img = self.transform(image=img)['image']
 
         return torch.from_numpy(img).permute(2, 0, 1), target, meta
@@ -287,12 +293,14 @@ def parse_args():
 
 
 if __name__ == '__main__':
+    from lib.config.mydefault import _C as cfg
     args = parse_args()
     train_label_file = "/home/zhucc/kaggle/pytorch_classification/data/cv/fold_0/train.txt"
     val_label_file = "/home/zhucc/kaggle/pytorch_classification/data/cv/fold_0/val.txt"
 
     update_config(cfg, args)
-    train_set = IMBALANCECASSAVA(train_label_file, 'train', cfg)
+    # train_set = IMBALANCECASSAVA(train_label_file, 'train', cfg)
+    train_set = IMBALANCECASSAVA(train_label_file, cfg, mode="train", transform_name="RandomAugment")
     print(train_set.get_annotations())
     print(train_set.get_num_classes())
     print(train_set.class_weight)
@@ -300,12 +308,12 @@ if __name__ == '__main__':
     # print(len(np.array(li)) for li in data)
 
     # val_set = IMBALANCECASSAVA(val_label_file, 'val', cfg)
-    # train_dataloader = torch.utils.data.DataLoader(train_set, batch_size=2, shuffle=True, num_workers=2)
+    train_dataloader = torch.utils.data.DataLoader(train_set, batch_size=2, shuffle=True, num_workers=2)
     # val_dataloader = torch.utils.data.DataLoader(val_set, batch_size=2, shuffle=False, num_workers=2)
     #
-    # train_loader = iter(train_dataloader)
-    # train_data, train_label, train_meta = next(train_loader)
-    # print(train_data.shape, train_label, train_meta['sample_image'].shape, train_meta['sample_label'])
+    train_loader = iter(train_dataloader)
+    train_data, train_label, train_meta = next(train_loader)
+    print(train_data.shape, train_label, train_meta['sample_image'].shape, train_meta['sample_label'])
     # print("================================")
     # val_loader = iter(val_dataloader)
     # val_data, val_label, val_meta = next(val_loader)
