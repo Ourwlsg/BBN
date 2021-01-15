@@ -31,6 +31,18 @@ def bbn_resnext50(cfg, test, progress=True, **kwargs):
     return _resnext('resnext50_32x4d', cfg, test, Bottleneck, [3, 4, 6, 3], True, progress, **kwargs)
 
 
+def bbn_resnext101(cfg, test, progress=True, **kwargs):
+    """Constructs a ResNeXt-101 32x8 model pre-trained on weakly-supervised data
+    and finetuned on ImageNet from Figure 5 in
+    `"Exploring the Limits of Weakly Supervised Pretraining" <https://arxiv.org/abs/1805.00932>`_
+    Args:
+        progress (bool): If True, displays a progress bar of the download to stderr.
+    """
+    kwargs['groups'] = 32
+    kwargs['width_per_group'] = 8
+    return _resnext('resnext101_32x8d', cfg, test, Bottleneck, [3, 4, 23, 3], True, progress, **kwargs)
+
+
 class Network(nn.Module):
     def __init__(self, cfg, mode="train", num_classes=1000):
         super(Network, self).__init__()
@@ -46,7 +58,9 @@ class Network(nn.Module):
         self.cfg = cfg
         if 'efficientnet' in self.cfg.BACKBONE.TYPE:
             self.backbone = Efficientnet(self.cfg.BACKBONE.TYPE, pretrain, self.cfg, test=False)
-        elif 'resnext' in self.cfg.BACKBONE.TYPE:
+        elif 'resnext101' in self.cfg.BACKBONE.TYPE:
+            self.backbone = bbn_resnext101(self.cfg.BACKBONE.TYPE, pretrain, self.cfg, test=False)
+        elif 'resnext50' in self.cfg.BACKBONE.TYPE:
             self.backbone = bbn_resnext50(self.cfg, test=False)
         elif 'bbn_res50' in self.cfg.BACKBONE.TYPE:
             self.backbone = bbn_res50(
@@ -55,6 +69,7 @@ class Network(nn.Module):
                 pretrained_model=cfg.BACKBONE.PRETRAINED_MODEL,
                 last_layer_stride=2,
             )
+
         else:
             print("backbone error!")
         self.module = self._get_module()
