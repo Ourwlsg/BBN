@@ -41,9 +41,9 @@ LOSS:
 #  LOSS_TYPE: 'CSCE'
 
 TRAIN:
-  BATCH_SIZE: 16
+  BATCH_SIZE: 12
   MAX_EPOCH: 30
-  NUM_WORKERS: 8
+  NUM_WORKERS: 6
   COMBINER:
     TYPE: 'bbn_mix'
 #    TYPE: 'default'
@@ -79,7 +79,7 @@ TRAIN:
 #  TEST_TRANSFORMS: ()
 
 TEST:
-  BATCH_SIZE: 16
-  NUM_WORKERS: 8
+  BATCH_SIZE: 12
+  NUM_WORKERS: 6
   MODEL_FILE: 'best_model.pth'
 
