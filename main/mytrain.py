@@ -115,7 +115,7 @@ if __name__ == "__main__":
                 'LDAMLoss': lambda: LDAMLoss(para_dict=para_dict),
                 'SymmetricCrossEntropy': lambda: SymmetricCrossEntropy(alpha=0.1, beta=1.0, num_classes=5),
                 # 'bi_tempered_logistic_loss': lambda: bi_tempered_logistic_loss(activations, labels, t1, t2, label_smoothing=0.0, num_iters=5),
-                'LabelSmoothingCrossEntropy': LabelSmoothingCrossEntropy()
+                'LabelSmoothingCrossEntropy': lambda: LabelSmoothingCrossEntropy(),
             }[cfg.LOSS.LOSS_TYPE]()
 
             # CrossEntropy
