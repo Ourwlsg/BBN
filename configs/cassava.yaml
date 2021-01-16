@@ -1,4 +1,4 @@
-NAME: 'BBN.cassava.new_cv20.resnext30.LSCE.SGD.RandAugment.30epoch'
+NAME: 'BBN.cassava.new_cv20.resnext50.LSCE.SGD.RandAugment.30epoch'
 OUTPUT_DIR: './output/cassava/new_cv20'
 SHOW_STEP: 50
 SAVE_STEP: 5
