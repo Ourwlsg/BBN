@@ -1,4 +1,4 @@
-NAME: 'BBN.cassava.new_cv20.resnext101.CE.SGD.RandAugment.30epoch'
+NAME: 'BBN.cassava.new_cv20.resnext30.LSCE.SGD.RandAugment.30epoch'
 OUTPUT_DIR: './output/cassava/new_cv20'
 SHOW_STEP: 50
 SAVE_STEP: 5
@@ -16,13 +16,13 @@ BACKBONE:
 #  TYPE: 'bbn_res32_cifar'
 #  TYPE: 'bbn_res50'
 #  TYPE: 'bbn_efficientnet-b4'
-#  TYPE: 'bbn_resnext50'
-  TYPE: 'bbn_resnext101'
+  TYPE: 'bbn_resnext50'
+#  TYPE: 'bbn_resnext101'
 
 #  PRETRAINED_MODEL: "../cassava/pretrained_models/resnet50-19c8e357.pth"
 #  PRETRAINED_MODEL: "../cassava/pretrained_models/efficientnet-b4.pth"
-#  PRETRAINED_MODEL: "../cassava/pretrained_models/resnext50_32x4d.pth"
-  PRETRAINED_MODEL: "../cassava/pretrained_models/resnext101_32x8d.pth"
+  PRETRAINED_MODEL: "../cassava/pretrained_models/resnext50_32x4d.pth"
+#  PRETRAINED_MODEL: "../cassava/pretrained_models/resnext101_32x8d.pth"
 
 
 MODULE:
@@ -35,15 +35,16 @@ CLASSIFIER:
   BIAS: True
 
 LOSS:
-  LOSS_TYPE: 'CrossEntropy'
+#  LOSS_TYPE: 'CrossEntropy'
 #  LOSS_TYPE: 'SymmetricCrossEntropy'
 #  LOSS_TYPE: 'LDAMLoss'
 #  LOSS_TYPE: 'CSCE'
+  LOSS_TYPE: 'LabelSmoothingCrossEntropy'
 
 TRAIN:
-  BATCH_SIZE: 12
+  BATCH_SIZE: 26
   MAX_EPOCH: 30
-  NUM_WORKERS: 6
+  NUM_WORKERS: 13
   COMBINER:
     TYPE: 'bbn_mix'
 #    TYPE: 'default'
@@ -79,7 +80,7 @@ TRAIN:
 #  TEST_TRANSFORMS: ()
 
 TEST:
-  BATCH_SIZE: 12
-  NUM_WORKERS: 6
+  BATCH_SIZE: 26
+  NUM_WORKERS: 13
   MODEL_FILE: 'best_model.pth'
 

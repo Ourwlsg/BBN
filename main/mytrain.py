@@ -2,6 +2,7 @@ import sys
 
 # from lib.loss.bi_tempere_loss import bi_tempered_logistic_loss
 # from lib.loss.symmetric_CE_loss import SymmetricCrossEntropy
+from lib.loss.label_smoothing_loss import LabelSmoothingCrossEntropy
 
 sys.path.insert(0, '/workspace/BBN/')
 import main._init_paths
@@ -113,8 +114,8 @@ if __name__ == "__main__":
                 'CSCE': lambda: CSCE(para_dict=para_dict),
                 'LDAMLoss': lambda: LDAMLoss(para_dict=para_dict),
                 'SymmetricCrossEntropy': lambda: SymmetricCrossEntropy(alpha=0.1, beta=1.0, num_classes=5),
-                # 'bi_tempered_logistic_loss': lambda: bi_tempered_logistic_loss(),
-
+                # 'bi_tempered_logistic_loss': lambda: bi_tempered_logistic_loss(activations, labels, t1, t2, label_smoothing=0.0, num_iters=5),
+                'LabelSmoothingCrossEntropy': LabelSmoothingCrossEntropy()
             }[cfg.LOSS.LOSS_TYPE]()
 
             # CrossEntropy
