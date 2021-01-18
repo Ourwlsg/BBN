@@ -1,16 +1,17 @@
 import torch, math
 from bisect import bisect_right
 
+
 class WarmupMultiStepLR(torch.optim.lr_scheduler._LRScheduler):
     def __init__(
-        self,
-        optimizer,
-        milestones,
-        gamma=0.1,
-        warmup_factor=1.0 / 3,
-        warmup_epochs=5,
-        warmup_method="linear",
-        last_epoch=-1,
+            self,
+            optimizer,
+            milestones,
+            gamma=0.1,
+            warmup_factor=1.0 / 3,
+            warmup_epochs=5,
+            warmup_method="linear",
+            last_epoch=-1,
     ):
         if not list(milestones) == sorted(milestones):
             raise ValueError(
