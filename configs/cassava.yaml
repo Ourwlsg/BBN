@@ -1,5 +1,5 @@
 NAME: 'BBN.cassava.new_cv20.resnext50.SCE.SGD.cosine.RandAugment.50epoch'
-OUTPUT_DIR: './output/cassava/cv20'
+OUTPUT_DIR: './output/cassava/new_cv20'
 SHOW_STEP: 50
 SAVE_STEP: 5
 VALID_STEP: 1
