@@ -106,7 +106,7 @@ def get_scheduler(cfg, optimizer):
             )
         else:
             scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
-                optimizer, T_max=cfg.TRAIN.MAX_EPOCH, eta_min=1e-4
+                optimizer, T_max=cfg.TRAIN.MAX_EPOCH, eta_min=1e-5
             )
     elif cfg.TRAIN.LR_SCHEDULER.TYPE == "warmup":
         scheduler = WarmupMultiStepLR(
