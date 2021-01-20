@@ -1,5 +1,5 @@
-NAME: 'BBN.cassava.new_cv20.resnext50.CE.SGD.multistep.RandAugment.30epoch'
-OUTPUT_DIR: './output/cassava/new_cv20'
+NAME: 'BBN.cassava.cv20.resnext50.SCE.SGD.cosine.RandAugment.30epoch'
+OUTPUT_DIR: './output/cassava/cv20'
 SHOW_STEP: 50
 SAVE_STEP: 5
 VALID_STEP: 1
@@ -35,15 +35,15 @@ CLASSIFIER:
   BIAS: True
 
 LOSS:
-  LOSS_TYPE: 'CrossEntropy'
-#  LOSS_TYPE: 'SymmetricCrossEntropy'
+#  LOSS_TYPE: 'CrossEntropy'
+  LOSS_TYPE: 'SymmetricCrossEntropy'
 #  LOSS_TYPE: 'LDAMLoss'
 #  LOSS_TYPE: 'CSCE'
 #  LOSS_TYPE: 'LabelSmoothingCrossEntropy'
 
 TRAIN:
   BATCH_SIZE: 26
-  MAX_EPOCH: 30
+  MAX_EPOCH: 50
   NUM_WORKERS: 13
   COMBINER:
     TYPE: 'bbn_mix'
@@ -59,8 +59,8 @@ TRAIN:
     MOMENTUM: 0.9
     WEIGHT_DECAY: 2e-5
   LR_SCHEDULER:
-#    TYPE: 'cosine'
-    TYPE: 'multistep'
+    TYPE: 'cosine'
+#    TYPE: 'multistep'
 #    TYPE: 'warmup'
     LR_STEP: [15, 25]
     LR_FACTOR: 0.1
