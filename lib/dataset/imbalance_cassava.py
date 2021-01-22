@@ -99,7 +99,7 @@ class IMBALANCECASSAVA(Dataset):
         self.dual_sample = True if cfg.TRAIN.SAMPLER.DUAL_SAMPLER.ENABLE and self.train else False
         rand_number = cfg.DATASET.IMBALANCECASSAVA.RANDOM_SEED
         if self.train:
-            self.augment = RandomAugment(N=2, M=7)
+            self.augment = RandomAugment(N=3, M=7)
             np.random.seed(rand_number)
             random.seed(rand_number)
             # imb_factor = self.cfg.DATASET.IMBALANCECASSAVA.RATIO
