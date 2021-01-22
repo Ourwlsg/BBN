@@ -66,6 +66,7 @@ if __name__ == "__main__":
     target_names = ['class 0', 'class 1', 'class 2', 'class 3', 'class 4']
     GPU_ID = '1'
     K_FOLD = [4, 3, 2, 1, 0]
+    RandomAugment = True
 
     os.environ["CUDA_VISIBLE_DEVICES"] = GPU_ID
     args = parse_args()
@@ -90,8 +91,10 @@ if __name__ == "__main__":
             print('fold_' + str(k) + f' {l_name} is running...')
             train_label_dir = DIR_CV + 'fold_' + str(k) + '/train.txt'
             val_label_dir = DIR_CV + 'fold_' + str(k) + '/val.txt'
-            train_set = IMBALANCECASSAVA(train_label_dir, cfg, mode="train", transform_name="RandomAugment")
-            # train_set = IMBALANCECASSAVA(train_label_dir, cfg, mode="train", transform_name="light_augment")
+            if RandomAugment:
+                train_set = IMBALANCECASSAVA(train_label_dir, cfg, mode="train", transform_name="RandomAugment")
+            else:
+                train_set = IMBALANCECASSAVA(train_label_dir, cfg, mode="train", transform_name="light_augment")
 
             valid_set = IMBALANCECASSAVA(val_label_dir, cfg, mode="valid", transform_name=None)
 
