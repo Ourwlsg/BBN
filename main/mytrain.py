@@ -62,7 +62,7 @@ def parse_args():
 
 
 if __name__ == "__main__":
-    DIR_CV = '../cassava/data/new_cv20/'
+    DIR_CV = '../cassava/data/cv1920/'
     target_names = ['class 0', 'class 1', 'class 2', 'class 3', 'class 4']
     GPU_ID = '1'
     K_FOLD = [4, 3, 2, 1, 0]
